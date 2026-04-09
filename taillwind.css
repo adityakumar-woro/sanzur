@@ -1,5 +1,60 @@
 @tailwind base;
 
+/* ── Custom cursor ── */
+@media (pointer: fine) {
+  .cursor-none-desktop,
+  .cursor-none-desktop * {
+    cursor: none !important;
+  }
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: #1a1a1a;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s cubic-bezier(0.33, 1, 0.68, 1),
+              height 0.25s cubic-bezier(0.33, 1, 0.68, 1),
+              border-color 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cursor-ring.is-hovered {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.cursor-ring-plus {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+}
+
 /* ── Scroll-reveal animation ── */
 .reveal {
   opacity: 0;
@@ -26,6 +81,41 @@
 .reveal-up.reveal-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Mobile: use lighter fade-only (no translate) for better perf ── */
+@media (max-width: 767px) {
+  .reveal {
+    transform: none;
+    transition: opacity 0.5s cubic-bezier(0.19, 0, 0, 1);
+  }
+  .reveal-visible {
+    transform: none;
+  }
+  .reveal-up {
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.19, 0, 0, 1),
+      transform 0.5s cubic-bezier(0.19, 0, 0, 1);
+  }
+  .reveal-up.reveal-visible {
+    transform: translateY(0);
+  }
+}
+
+/* ── Respect reduced-motion preference ── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal-delay-1,
+  .reveal-delay-2,
+  .reveal-delay-3,
+  .reveal-delay-4 {
+    transition-delay: 0s;
+  }
 }
 @tailwind components;
 @tailwind utilities;

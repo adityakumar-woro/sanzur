@@ -8,7 +8,8 @@ import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
 import { NewsPage } from "./pages/NewsPage";
 import { NewsArticlePage } from "./pages/NewsArticlePage";
-import "./index.css"; // ✅ ADD THIS LINE
+import "./index.css";
+import "../taillwind.css";
 
 const router = createBrowserRouter([
   {
@@ -32,11 +33,11 @@ const router = createBrowserRouter([
     element: <ContactPage />,
   },
   {
-    path: "/news",
+    path: "/blogs",
     element: <NewsPage />,
   },
   {
-    path: "/news/:id",
+    path: "/blogs/:id",
     element: <NewsArticlePage />,
   },
 ]);

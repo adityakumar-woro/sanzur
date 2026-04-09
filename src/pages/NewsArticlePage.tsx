@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { CustomCursor } from "@/components/CustomCursor";
+import { PageWrapper } from "@/components/PageWrapper";
+import { useInView } from "@/hooks/useInView";
 
 const ALL_ARTICLES = [
   {
@@ -30,10 +33,10 @@ const ALL_ARTICLES = [
       "The award ceremony will take place in Munich in March 2024, where the winner will be announced.",
     ],
   },
-    {
+  {
     id: "latest-commercial-design",
     title: "Latest Commercial Design by sanzur",
-    category: "News",
+    category: "Blog",
     date: "Dec 23, 2023",
     image: "https://framerusercontent.com/images/IjUpvkvBshn9VuR2lXanbUgCQK4.jpeg",
     body: [
@@ -69,25 +72,21 @@ const ALL_ARTICLES = [
     ],
   },
 ];
-const AnimatedSection = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  const ref = useScrollReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={`reveal ${className ?? ""}`}>
-      {children}
-    </div>
-  );
-};
+
+const EASE = [0.33, 1, 0.68, 1] as const;
 
 export const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
   const article = ALL_ARTICLES.find((a) => a.id === id);
+  const { ref: bodyRef, inView: bodyInView } = useInView({ threshold: 0.05 });
+  const { ref: relatedRef, inView: relatedInView } = useInView({ threshold: 0.05 });
 
   if (!article) {
     return (
       <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center gap-6 font-dm_sans">
         <p className="text-2xl font-light text-black">Article not found.</p>
-        <a href="/news" className="text-black/60 hover:text-black text-sm no-underline">
-          ← Back to News
+        <a href="/blogs" className="text-black/60 hover:text-black text-sm no-underline">
+          ← Back to Blogs
         </a>
       </div>
     );
@@ -95,82 +94,109 @@ export const NewsArticlePage = () => {
 
   const currentIndex = ALL_ARTICLES.findIndex((a) => a.id === id);
   const relatedArticles = ALL_ARTICLES.filter((_, i) => i !== currentIndex).slice(0, 3);
-    return (
-    <div className="text-black text-xs not-italic normal-nums font-normal accent-auto bg-orange-50 box-border caret-transparent block tracking-[normal] leading-[normal] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible border-separate font-sans_serif">
-      <div className="box-border caret-transparent">
-        <div className="relative content-center items-center bg-orange-50 flex flex-col h-min gap-y-0 w-full">
+
+  return (
+    <div className="text-black text-xs font-normal bg-orange-50 font-sans_serif cursor-none-desktop">
+      <CustomCursor />
+      <PageWrapper>
+        <div className="flex flex-col min-h-screen bg-orange-50">
           <Navbar />
 
           {/* ── HERO ── */}
-          <header className="sticky content-end items-end bg-black flex flex-col shrink-0 h-[70vh] min-h-[480px] justify-end w-full z-[1] overflow-hidden p-[30px] top-0">
+          <header className="relative flex flex-col justify-end h-[70vh] min-h-[480px] w-full overflow-hidden p-[30px]">
             <div className="absolute inset-0 z-0">
               <img
                 src={article.image}
                 alt={article.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover scale-105"
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[1]" />
             <div className="relative z-[2] flex flex-col gap-y-3 pb-4 w-full max-w-[900px]">
-              <div className="flex items-center gap-4">
+              <motion.div
+                className="flex items-center gap-4"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+              >
                 <span className="text-white/60 text-xs font-light font-dm_sans uppercase tracking-widest">
                   {article.category}
                 </span>
-                <span className="text-white/40 text-xs font-light font-dm_sans">|</span>
+                <span className="text-white/40 text-xs">|</span>
                 <span className="text-white/60 text-xs font-light font-dm_sans">{article.date}</span>
+              </motion.div>
+              <div className="overflow-hidden">
+                <motion.h1
+                  className="text-white font-light font-dm_sans leading-[1.1]"
+                  style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)" }}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {article.title}
+                </motion.h1>
               </div>
-              <h1 className="text-white text-[40px] md:text-[72px] font-light font-dm_sans leading-[1.1]">
-                {article.title}
-              </h1>
             </div>
           </header>
 
           {/* ── ARTICLE BODY ── */}
-          <section className="w-full bg-orange-50 px-[30px] py-[80px]">
+          <section
+            ref={bodyRef as React.RefObject<HTMLElement>}
+            className="w-full bg-orange-50 px-5 md:px-[30px] py-[80px]"
+          >
             <div className="max-w-[780px] mx-auto flex flex-col gap-8">
               {article.body.map((para, i) => (
-                <AnimatedSection key={i} className={i > 0 ? `reveal-delay-${Math.min(i, 4)}` : ""}>
-                  <p
-                    className="text-base md:text-lg font-light font-dm_sans text-black/80 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: para }}
-                  />
-                </AnimatedSection>
+                <motion.p
+                  key={i}
+                  className="text-base md:text-lg font-light font-dm_sans text-black/80 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: para }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={bodyInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+                />
               ))}
             </div>
           </section>
 
-          {/* ── DIVIDER ── */}
           <div className="w-full h-px bg-black/10" />
 
           {/* ── RELATED ARTICLES ── */}
-          <section className="w-full bg-orange-50 px-[30px] py-[80px]">
+          <section
+            ref={relatedRef as React.RefObject<HTMLElement>}
+            className="w-full bg-orange-50 px-5 md:px-[30px] py-[80px]"
+          >
             <div className="flex items-center justify-between mb-12">
-              <AnimatedSection>
-                <h2 className="text-[32px] md:text-[48px] font-light font-dm_sans leading-[1.1]">
-                  More Articles
-                </h2>
-              </AnimatedSection>
-              <AnimatedSection className="reveal-delay-1">
-                <a
-                  href="/news"
-                  className="text-sm font-light font-dm_sans text-black/50 hover:text-black transition-colors duration-200 no-underline"
-                >
-                  ← Back to News
-                </a>
-              </AnimatedSection>
+              <motion.h2
+                className="font-light font-dm_sans leading-[1.1]"
+                style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={relatedInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, ease: EASE }}
+              >
+                More Articles
+              </motion.h2>
+              <motion.a
+                href="/blogs"
+                className="text-sm font-light font-dm_sans text-black/50 hover:text-black transition-colors duration-200 no-underline"
+                initial={{ opacity: 0 }}
+                animate={relatedInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+              >
+                ← Back to Blogs
+              </motion.a>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedArticles.map((rel, i) => (
-                <a
+                <motion.a
                   key={rel.id}
-                  href={`/news/${rel.id}`}
+                  href={`/blogs/${rel.id}`}
                   className="group flex flex-col gap-4 no-underline"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={relatedInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: EASE }}
                 >
-                  <div
-                    className="relative overflow-hidden aspect-[4/3] bg-stone-200 reveal reveal-up"
-                    style={{ transitionDelay: `${i * 0.1}s` }}
-                  >
+                  <div className="relative overflow-hidden aspect-[4/3] bg-stone-200">
                     <img
                       src={rel.image}
                       alt={rel.title}
@@ -189,14 +215,14 @@ export const NewsArticlePage = () => {
                       {rel.title}
                     </h3>
                   </div>
-                </a>
+                </motion.a>
               ))}
             </div>
           </section>
 
           <Footer />
         </div>
-      </div>
-   </div>
+      </PageWrapper>
+    </div>
   );
 };

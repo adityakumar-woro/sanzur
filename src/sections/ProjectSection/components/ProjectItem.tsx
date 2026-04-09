@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
 export type ProjectItemProps = {
   number: string;
   title: string;
@@ -8,45 +11,107 @@ export type ProjectItemProps = {
 };
 
 export const ProjectItem = (props: ProjectItemProps) => {
+  const ref = useRef<HTMLElement>(null);
+  const hoverImageRef = useRef<HTMLDivElement>(null);
+
+  // Parallax for background image (full range)
+  const { scrollYProgress: parallaxProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Entrance animation — from when section enters viewport to when it's centered
+  const { scrollYProgress: enterProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center 55%"],
+  });
+
+  const imgY = useTransform(parallaxProgress, [0, 1], ["-6%", "6%"]);
+
+  // Scroll-driven fade + slide — content reveals as user scrolls into each project
+  const contentOpacity = useTransform(enterProgress, [0, 0.55], [0, 1]);
+  const contentY = useTransform(enterProgress, [0, 0.55], [72, 0]);
+
+  const onMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xPct = (e.clientX - rect.left) / rect.width - 0.5;
+    const yPct = (e.clientY - rect.top) / rect.height - 0.5;
+    if (hoverImageRef.current) {
+      hoverImageRef.current.style.transform = `scale(1.06) translate(${xPct * 12}px, ${yPct * 8}px)`;
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (hoverImageRef.current) {
+      hoverImageRef.current.style.transform = "scale(1) translate(0, 0)";
+    }
+  };
+
   return (
-    <section className="sticky content-start items-start bg-orange-50 box-border caret-transparent gap-x-0 flex flex-col shrink-0 h-min justify-center min-h-[auto] min-w-[auto] gap-y-0 w-full z-[2] top-0">
+    <section
+      ref={ref}
+      className="relative bg-orange-50 flex flex-col shrink-0 h-min justify-center w-full"
+    >
       <a
         href={props.href}
-        className="relative text-blue-700 content-center items-center bg-orange-50 box-border caret-transparent gap-x-[250px] flex flex-col shrink-0 h-[1000px] justify-start min-h-[auto] min-w-[auto] gap-y-[250px] w-full z-[1] overflow-hidden px-[30px] py-[100px]"
+        className="relative flex flex-col shrink-0 h-[70vh] min-h-[500px] md:h-[100vh] justify-start w-full z-[1] overflow-hidden px-5 md:px-[30px] py-10 md:py-[100px] gap-y-14 md:gap-y-[250px]"
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
       >
-        <div className="relative content-center items-center box-border caret-transparent gap-x-2.5 flex shrink-0 h-min justify-start min-h-[auto] min-w-[auto] gap-y-2.5 w-full overflow-hidden">
-          <div className="relative box-border caret-transparent flex flex-col shrink-0 justify-start min-h-[auto] min-w-[auto] text-nowrap z-[2]">
-            <h1 className="text-white text-[49px] font-light box-border caret-transparent leading-[58.8px] min-h-[auto] min-w-[auto] text-nowrap font-dm_sans md:text-8xl md:leading-[115.2px]">
+        {/* Scroll-driven content wrapper */}
+        <motion.div
+          className="relative z-[2] flex flex-col justify-between h-full gap-y-14 md:gap-y-[250px]"
+          style={{ opacity: contentOpacity, y: contentY }}
+        >
+          {/* Number */}
+          <div className="overflow-hidden">
+            <h1 className="text-white font-light font-dm_sans leading-none text-[36px] md:text-8xl">
               {props.number}
             </h1>
           </div>
-        </div>
-        <div className="relative content-start items-start box-border caret-transparent gap-x-[25px] flex flex-col shrink-0 h-min justify-start min-h-[auto] min-w-[auto] gap-y-[25px] w-full overflow-hidden md:content-center md:items-center md:gap-x-[normal] md:flex-row md:justify-between md:gap-y-[normal]">
-          <div
-            className={`relative box-border caret-transparent flex flex-col shrink-0 justify-start min-h-[auto] min-w-[auto] break-words z-[2] ${props.titleVariantClass}`}
-          >
-            <h1 className="text-white text-[49px] font-light box-border caret-transparent leading-[58.8px] min-h-[auto] min-w-[auto] break-words font-dm_sans md:text-8xl md:leading-[115.2px]">
-              {props.title}
-            </h1>
-          </div>
-          <div className="relative content-start items-start box-border caret-transparent gap-x-[50px] flex basis-auto flex-col grow-0 shrink-0 h-min justify-start max-w-[367px] min-h-[auto] min-w-[auto] gap-y-[50px] w-full overflow-hidden md:basis-0 md:grow md:w-px">
-            <div className="relative box-border caret-transparent flex flex-col shrink-0 justify-start min-h-[auto] min-w-[auto] break-words w-full z-[2]">
-              <h5 className="text-white text-base font-light box-border caret-transparent leading-[19.2px] min-h-[auto] min-w-[auto] break-words font-inter md:text-[21px] md:leading-[25.2px]">
+
+          {/* Title + Description row */}
+          <div className="flex flex-col gap-y-4 md:gap-y-0 md:flex-row md:items-center md:justify-between w-full">
+            <div className={`flex flex-col shrink-0 justify-start break-words ${props.titleVariantClass}`}>
+              <h1 className="text-white font-light font-dm_sans leading-[1.08] text-[36px] md:text-8xl break-words">
+                {props.title}
+              </h1>
+            </div>
+
+            <div className="flex flex-col shrink-0 h-min justify-start max-w-full md:max-w-[340px] w-full">
+              <h5 className="text-white font-light font-inter break-words text-sm md:text-[21px] leading-relaxed">
                 {props.description}
               </h5>
+              <motion.div
+                className="inline-flex items-center gap-2 text-white/60 text-sm font-dm_sans font-light mt-4"
+                whileHover={{ x: 5 }}
+              >
+                <span>→</span>
+                <span className="border-b border-white/30">View Project</span>
+              </motion.div>
             </div>
           </div>
-        </div>
-        <div className="absolute bg-black box-border caret-transparent shrink-0 h-full opacity-40 w-full z-[1] overflow-hidden left-0 top-0"></div>
-        <div className="absolute box-border caret-transparent shrink-0 h-[122%] left-[-11.0833%] top-[-11.0625%] w-[122%] z-0">
-          <div className="absolute box-border caret-transparent inset-0">
+        </motion.div>
+
+        {/* Dark overlay */}
+        <div className="absolute bg-black h-full opacity-40 w-full z-[1] left-0 top-0 pointer-events-none" />
+
+        {/* Background image with parallax + hover drift */}
+        <div className="absolute inset-0 overflow-hidden z-0">
+          <motion.div
+            ref={hoverImageRef}
+            className="w-full h-full"
+            style={{
+              y: imgY,
+              transition: "transform 0.6s cubic-bezier(0.33,1,0.68,1)",
+            }}
+          >
             <img
-              sizes="calc(100vw * 1.2217)"
               src={props.imageSrc}
               alt=""
-              className="aspect-[auto_2400_/_1345] box-border caret-transparent h-full object-cover align-baseline w-full"
+              className="w-full h-full object-cover scale-110"
             />
-          </div>
+          </motion.div>
         </div>
       </a>
     </section>

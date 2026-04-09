@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { CustomCursor } from "@/components/CustomCursor";
+import { PageWrapper } from "@/components/PageWrapper";
+import { useInView } from "@/hooks/useInView";
 import villa1 from "@/assets/villa1.jpeg";
 import villa2 from "@/assets/villa2.jpeg";
 import villa3 from "@/assets/villa3.jpeg";
@@ -60,12 +63,7 @@ const ALL_PROJECTS = [
       "Jewellery retail spaces carry a unique responsibility; they must evoke a sense of value, inviting customers to pause, to appreciate, and to dream. At Al Awadhi, located within Al Maqtaa Mall, the ground floor was designed around the experience of discovery.\n\nWarm, wood-toned display cabinetry, refined gold accents, and a dramatic chandelier ceiling work in harmony to create an atmosphere that is both immersive and unhurried. These elements are not merely decorative; they are intentional, designed to slow the pace and encourage moments of connection with each piece. The shopfront, crafted from a combination of dark marble and glass, establishes a sense of elegance even before one steps inside.\n\nAbove, a discreet mezzanine level accommodates operational functions, allowing the retail floor to remain uninterrupted — preserving the sense of quiet luxury and focus that defines the experience below.",
     caption: "An immersive retail experience where every detail invites pause and appreciation.",
     heroImage: awadhi1,
-galleryImages: [
-  awadhi2,
-  awadhi3,
-  awadhi4,
-  awadhi1,
-],
+    galleryImages: [awadhi2, awadhi3, awadhi4, awadhi1],
   },
   {
     id: "padel",
@@ -85,41 +83,30 @@ galleryImages: [
       "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
     ],
   },
-{
-  id: "villa-17",
-  name: "Villa 17",
-  subtitle: "Luxury defined by quiet confidence and effortless comfort",
-  type: "Residential",
-  location: "India",
-  year: "2024",
-  description:
-    "Luxury, to us, is never about excess; it is defined by a quiet confidence, where a space makes you feel completely at ease from the moment you arrive. Villa 17 was conceived around this very idea.\n\nEach space has been thoughtfully designed to serve the people who inhabit it. The master bedroom offers a sense of enveloping comfort at the end of a long day, the kitchen is both generous and intuitive — inviting moments of gathering and creation — while the dining area, with its interplay of marble and soft lighting, transforms even the most ordinary evenings into something memorable.\n\nThe response from those who have experienced the home has been deeply telling — a reluctance to leave, a desire to linger. For us, there is no greater measure of success than that.",
-  caption: "Quiet luxury where comfort and thoughtful design create a desire to stay.",
-  
-  heroImage: villa2,
-galleryImages: [
-  villa1,
-  villa3,
-  villa4,
-  villa5,
-],
-},
+  {
+    id: "villa-17",
+    name: "Villa 17",
+    subtitle: "Luxury defined by quiet confidence and effortless comfort",
+    type: "Residential",
+    location: "India",
+    year: "2024",
+    description:
+      "Luxury, to us, is never about excess; it is defined by a quiet confidence, where a space makes you feel completely at ease from the moment you arrive. Villa 17 was conceived around this very idea.\n\nEach space has been thoughtfully designed to serve the people who inhabit it. The master bedroom offers a sense of enveloping comfort at the end of a long day, the kitchen is both generous and intuitive — inviting moments of gathering and creation — while the dining area, with its interplay of marble and soft lighting, transforms even the most ordinary evenings into something memorable.\n\nThe response from those who have experienced the home has been deeply telling — a reluctance to leave, a desire to linger. For us, there is no greater measure of success than that.",
+    caption: "Quiet luxury where comfort and thoughtful design create a desire to stay.",
+    heroImage: villa2,
+    galleryImages: [villa1, villa3, villa4, villa5],
+  },
 ];
 
 const NEXT_PROJECT_COUNT = 3;
-
-const AnimatedSection = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  const ref = useScrollReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={`reveal ${className ?? ""}`}>
-      {children}
-    </div>
-  );
-};
+const EASE = [0.33, 1, 0.68, 1] as const;
 
 export const ProjectDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const project = ALL_PROJECTS.find((p) => p.id === id);
+  const { ref: infoRef, inView: infoInView } = useInView({ threshold: 0.1 });
+  const { ref: galleryRef, inView: galleryInView } = useInView({ threshold: 0.05 });
+  const { ref: nextRef, inView: nextInView } = useInView({ threshold: 0.05 });
 
   if (!project) {
     return (
@@ -132,140 +119,178 @@ export const ProjectDetailPage = () => {
     );
   }
 
-  // Build "next" projects (3 after the current, wrapping around)
   const currentIndex = ALL_PROJECTS.findIndex((p) => p.id === id);
   const nextProjects = Array.from({ length: NEXT_PROJECT_COUNT }, (_, i) =>
     ALL_PROJECTS[(currentIndex + i + 1) % ALL_PROJECTS.length]
   );
 
   return (
-    <div className="text-black text-xs not-italic normal-nums font-normal accent-auto bg-orange-50 box-border caret-transparent block tracking-[normal] leading-[normal] list-outside list-disc pointer-events-auto text-start indent-[0px] normal-case visible border-separate font-sans_serif">
-      <div className="box-border caret-transparent">
-        <div className="relative content-center items-center bg-orange-50 flex flex-col h-min gap-y-0 w-full">
+    <div className="text-black text-xs font-normal bg-orange-50 font-sans_serif cursor-none-desktop">
+      <CustomCursor />
+      <PageWrapper>
+        <div className="flex flex-col min-h-screen bg-orange-50">
           <Navbar />
 
-          {/* ── HERO ── (Fixed - No longer sticky) */}
-          <header className="relative flex flex-col justify-end min-h-[85vh] min-h-[500px] w-full overflow-hidden p-[30px]">
+          {/* ── HERO ── */}
+          <header className="relative flex flex-col justify-end min-h-[85vh] w-full overflow-hidden p-[30px]">
             <div className="absolute inset-0 z-0">
               <img
                 src={project.heroImage}
                 alt={project.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover scale-105"
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-[1]" />
-            <div className="relative z-[2] flex flex-col gap-y-3 pb-4 w-full max-w-[1200px]">
-              <p className="text-white/60 text-sm font-light font-dm_sans tracking-widest uppercase">
+            <div className="relative z-[2] flex flex-col gap-y-3 pb-4 w-full">
+              <motion.p
+                className="text-white/60 text-sm font-light tracking-widest uppercase"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+              >
                 {project.type}
-              </p>
-              <h1 className="text-white text-[56px] md:text-[96px] font-light font-dm_sans leading-[1.05]">
-                {project.name}
-              </h1>
-              <p className="text-white/70 text-lg md:text-2xl font-light font-dm_sans leading-[1.3] max-w-[700px]">
+              </motion.p>
+              <div className="overflow-hidden">
+                <motion.h1
+                  className="text-white font-light leading-[1.05]"
+                  style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {project.name}
+                </motion.h1>
+              </div>
+              <motion.p
+                className="text-white/70 font-light font-dm_sans leading-[1.3] max-w-[700px]"
+                style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
+              >
                 {project.subtitle}
-              </p>
+              </motion.p>
             </div>
           </header>
 
           {/* ── PROJECT INFO ── */}
-          <section className="w-full bg-orange-50 border-b border-black/20 px-[30px] py-[80px]">
+          <section
+            ref={infoRef as React.RefObject<HTMLElement>}
+            className="w-full bg-orange-50 border-b border-black/20 px-5 md:px-[30px] py-[80px]"
+          >
             <div className="flex flex-col md:flex-row gap-10 md:gap-20 max-w-[1200px]">
-              {/* meta */}
-              <AnimatedSection className="flex flex-col gap-2 md:w-[220px] shrink-0">
+              <motion.div
+                className="flex flex-col gap-2 md:w-[220px] shrink-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={infoInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, ease: EASE }}
+              >
                 <p className="text-xs font-light font-dm_sans uppercase tracking-widest text-black/40 mb-3">Details</p>
                 <p className="text-base font-light font-dm_sans text-black">{project.type}</p>
                 <p className="text-sm font-light font-dm_sans text-black/60">{project.location}</p>
                 <p className="text-sm font-light font-dm_sans text-black/60">{project.year}</p>
-              </AnimatedSection>
-              {/* description */}
-              <AnimatedSection className="reveal-delay-1 flex-1">
+              </motion.div>
+              <motion.div
+                className="flex-1"
+                initial={{ opacity: 0, y: 20 }}
+                animate={infoInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+              >
                 <p className="text-base md:text-lg font-light font-dm_sans text-black/70 leading-relaxed whitespace-pre-line">
                   {project.description}
                 </p>
-              </AnimatedSection>
+              </motion.div>
             </div>
           </section>
 
-          {/* ── GALLERY IMAGE 1 — full width ── */}
-          <section className="w-full px-[30px] py-[30px]">
-            <AnimatedSection>
-              <div className="w-full overflow-hidden aspect-[16/9] bg-stone-200">
-                <img
-                  src={project.galleryImages[0]}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </AnimatedSection>
-          </section>
+          {/* ── GALLERY ── */}
+          <section
+            ref={galleryRef as React.RefObject<HTMLElement>}
+            className="w-full px-5 md:px-[30px] py-[30px]"
+          >
+            {/* Full-width image */}
+            <motion.div
+              className="w-full overflow-hidden aspect-[16/9] bg-stone-200 mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, ease: EASE }}
+            >
+              <img src={project.galleryImages[0]} alt="" className="w-full h-full object-cover" />
+            </motion.div>
 
-          {/* ── CAPTION + GALLERY IMAGE 2 ── */}
-          <section className="w-full px-[30px] py-[30px]">
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <AnimatedSection className="md:w-[40%]">
+            {/* Caption + image */}
+            <div className="flex flex-col md:flex-row gap-6 mb-6">
+              <motion.div
+                className="md:w-[40%] flex items-center"
+                initial={{ opacity: 0, x: -20 }}
+                animate={galleryInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+              >
                 <p className="text-sm md:text-base font-light font-dm_sans text-black/60 leading-relaxed italic max-w-[380px]">
-                  “{project.caption}”
+                  "{project.caption}"
                 </p>
-              </AnimatedSection>
-              <AnimatedSection className="reveal-delay-1 md:w-[60%]">
-                <div className="overflow-hidden aspect-[4/3] bg-stone-200">
-                  <img
-                    src={project.galleryImages[1]}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </AnimatedSection>
+              </motion.div>
+              <motion.div
+                className="md:w-[60%] overflow-hidden aspect-[4/3] bg-stone-200"
+                initial={{ opacity: 0, x: 20 }}
+                animate={galleryInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+              >
+                <img src={project.galleryImages[1]} alt="" className="w-full h-full object-cover" />
+              </motion.div>
             </div>
-          </section>
 
-          {/* ── GALLERY 2-UP ── */}
-          <section className="w-full px-[30px] py-[30px] pb-[80px]">
-            <AnimatedSection>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="overflow-hidden aspect-[4/3] bg-stone-200">
-                  <img
-                    src={project.galleryImages[2]}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="overflow-hidden aspect-[4/3] bg-stone-200">
-                  <img
-                    src={project.galleryImages[3] ?? project.galleryImages[0]}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            {/* 2-up grid */}
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-[50px]"
+              initial={{ opacity: 0, y: 30 }}
+              animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+            >
+              <div className="overflow-hidden aspect-[4/3] bg-stone-200">
+                <img src={project.galleryImages[2]} alt="" className="w-full h-full object-cover" />
               </div>
-            </AnimatedSection>
+              <div className="overflow-hidden aspect-[4/3] bg-stone-200">
+                <img src={project.galleryImages[3] ?? project.galleryImages[0]} alt="" className="w-full h-full object-cover" />
+              </div>
+            </motion.div>
           </section>
 
           {/* ── NEXT PROJECTS ── */}
-          <section className="w-full bg-orange-50 border-t border-black/20 px-[30px] py-[80px]">
+          <section
+            ref={nextRef as React.RefObject<HTMLElement>}
+            className="w-full bg-orange-50 border-t border-black/20 px-5 md:px-[30px] py-[80px]"
+          >
             <div className="flex items-center justify-between mb-12">
-              <AnimatedSection>
-                <h2 className="text-[36px] md:text-[56px] font-light font-dm_sans leading-[1.1]">
-                  Next Projects
-                </h2>
-              </AnimatedSection>
-              <AnimatedSection className="reveal-delay-1">
-                <a
-                  href="/projects"
-                  className="text-sm font-light font-dm_sans text-black/50 hover:text-black transition-colors duration-200 no-underline"
-                >
-                  ← Back to All Projects
-                </a>
-              </AnimatedSection>
+              <motion.h2
+                className="font-light font-dm_sans leading-[1.1]"
+                style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={nextInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, ease: EASE }}
+              >
+                Next Projects
+              </motion.h2>
+              <motion.a
+                href="/projects"
+                className="text-sm font-light font-dm_sans text-black/50 hover:text-black transition-colors duration-200 no-underline"
+                initial={{ opacity: 0 }}
+                animate={nextInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+              >
+                ← Back to All Projects
+              </motion.a>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {nextProjects.map((np, i) => (
-                <a
+                <motion.a
                   key={np.id}
                   href={`/projects/${np.id}`}
                   className="group flex flex-col gap-4 no-underline"
-                  style={{ transitionDelay: `${i * 0.1}s` }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={nextInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: EASE }}
                 >
                   <div className="relative overflow-hidden aspect-[4/3] bg-stone-200">
                     <img
@@ -283,14 +308,14 @@ export const ProjectDetailPage = () => {
                     </h3>
                     <p className="text-sm font-light font-dm_sans text-black/50">{np.location}</p>
                   </div>
-                </a>
+                </motion.a>
               ))}
             </div>
           </section>
 
           <Footer />
         </div>
-      </div>
+      </PageWrapper>
     </div>
   );
 };

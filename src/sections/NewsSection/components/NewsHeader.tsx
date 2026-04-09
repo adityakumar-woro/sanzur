@@ -12,7 +12,7 @@ export const NewsHeader = () => {
           ref={refLabel}
           className="reveal text-xs font-light font-dm_sans uppercase tracking-widest text-black/50"
         >
-          News
+          Blogs
         </p>
         <h2
           ref={refHeading}
@@ -24,7 +24,7 @@ export const NewsHeader = () => {
       <div className="flex items-end pb-2 md:w-auto">
         <a
           ref={refCta}
-          href="/news"
+          href="/blogs"
           className="reveal reveal-delay-2 text-base font-light font-dm_sans text-black hover:opacity-60 transition-opacity duration-200 no-underline"
         >
           View All →
