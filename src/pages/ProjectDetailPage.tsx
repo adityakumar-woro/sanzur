@@ -131,7 +131,7 @@ export const ProjectDetailPage = () => {
         <div className="flex flex-col min-h-screen bg-orange-50">
           <Navbar />
 
-          {/* ── HERO ── */}
+          {/* HERO */}
           <header className="relative flex flex-col justify-end min-h-[85vh] w-full overflow-hidden p-[30px]">
             <div className="absolute inset-0 z-0">
               <img
@@ -173,7 +173,7 @@ export const ProjectDetailPage = () => {
             </div>
           </header>
 
-          {/* ── PROJECT INFO ── */}
+          {/* PROJECT INFO */}
           <section
             ref={infoRef as React.RefObject<HTMLElement>}
             className="w-full bg-orange-50 border-b border-black/20 px-5 md:px-[30px] py-[80px]"
@@ -203,12 +203,11 @@ export const ProjectDetailPage = () => {
             </div>
           </section>
 
-          {/* ── GALLERY ── */}
+          {/* GALLERY */}
           <section
             ref={galleryRef as React.RefObject<HTMLElement>}
             className="w-full px-5 md:px-[30px] py-[30px]"
           >
-            {/* Full-width image */}
             <motion.div
               className="w-full overflow-hidden aspect-[16/9] bg-stone-200 mb-6"
               initial={{ opacity: 0, y: 30 }}
@@ -218,7 +217,6 @@ export const ProjectDetailPage = () => {
               <img src={project.galleryImages[0]} alt="" className="w-full h-full object-cover" />
             </motion.div>
 
-            {/* Caption + image */}
             <div className="flex flex-col md:flex-row gap-6 mb-6">
               <motion.div
                 className="md:w-[40%] flex items-center"
@@ -240,9 +238,8 @@ export const ProjectDetailPage = () => {
               </motion.div>
             </div>
 
-            {/* 2-up grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-[50px]"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={galleryInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
@@ -256,10 +253,10 @@ export const ProjectDetailPage = () => {
             </motion.div>
           </section>
 
-          {/* ── NEXT PROJECTS ── */}
+          {/* NEXT PROJECTS - Extra bottom padding added */}
           <section
             ref={nextRef as React.RefObject<HTMLElement>}
-            className="w-full bg-orange-50 border-t border-black/20 px-5 md:px-[30px] py-[80px]"
+            className="w-full bg-orange-50 border-t border-black/20 px-5 md:px-[30px] py-[80px] pb-24 md:pb-32"
           >
             <div className="flex items-center justify-between mb-12">
               <motion.h2

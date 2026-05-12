@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import heroImage from "@/assets/hb.jpg";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -27,7 +28,11 @@ const LetterReveal = ({
         className="inline-block"
         initial={{ y: "110%", opacity: 0 }}
         animate={{ y: "0%", opacity: 1 }}
-        transition={{ duration: 1, delay: baseDelay + i * stagger, ease: EASE }}
+        transition={{
+          duration: 1,
+          delay: baseDelay + i * stagger,
+          ease: EASE,
+        }}
       >
         {char}
       </motion.span>
@@ -37,33 +42,47 @@ const LetterReveal = ({
 
 export const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
 
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
   const bgScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0, 0.45]);
+  const overlayOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.6],
+    [0, 0.45]
+  );
 
   return (
-    <header ref={ref} className="relative w-full h-[50vh] md:h-screen bg-black overflow-hidden z-10">
-
-      {/* Background image — parallax + slight de-zoom on scroll */}
-      <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale }}>
+    <header
+      ref={ref}
+      className="relative w-full h-[50vh] md:h-screen bg-black overflow-hidden z-10"
+    >
+      {/* Background image */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ y: bgY, scale: bgScale }}
+      >
         <img
-          src="https://c.animaapp.com/mnosma4ux0dL0l/assets/vhTOTtueDBCx9yxBY9UPdO5eF9c.jpeg"
+          src={heroImage}
           alt=""
           className="w-full h-full object-cover"
           loading="eager"
         />
+
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90" />
       </motion.div>
 
-      {/* Scroll-driven darkening overlay */}
+      {/* Dark overlay */}
       <motion.div
         className="absolute inset-0 z-[1] bg-black pointer-events-none"
         style={{ opacity: overlayOpacity }}
       />
 
-      {/* SANZUR — letter-by-letter from below */}
+      {/* SANZUR */}
       <div className="absolute left-0 top-[16%] z-10 px-5 md:px-7">
         <LetterReveal
           text="SANZUR"
@@ -73,7 +92,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* Plus — scale + rotate in */}
+      {/* Plus */}
       <motion.div
         className="absolute z-10"
         style={{ left: "60%", top: "42%" }}
@@ -89,7 +108,7 @@ export const HeroSection = () => {
         </span>
       </motion.div>
 
-      {/* FUNCTION — letter-by-letter from below, right-aligned */}
+      {/* FUNCTION */}
       <div className="absolute right-0 z-10" style={{ bottom: "14%" }}>
         <LetterReveal
           text="FUNCTION"
@@ -109,10 +128,15 @@ export const HeroSection = () => {
         <span className="text-white/40 font-dm_sans font-light text-[10px] tracking-[0.2em] uppercase">
           Scroll
         </span>
+
         <motion.div
           className="w-px h-10 bg-white/30 origin-top"
           animate={{ scaleY: [1, 0, 1] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
       </motion.div>
 
@@ -125,7 +149,9 @@ export const HeroSection = () => {
           transition={{ duration: 0.7, delay: 0.95 }}
         >
           <p className="text-white font-dm_sans font-light text-xs md:text-sm leading-relaxed">
-            Crafting interiors that blend serenity and style — Sanzur brings thoughtful design to life with meticulous attention to the details that matter.
+            Crafting interiors that blend serenity and style — Sanzur brings
+            thoughtful design to life with meticulous attention to the details
+            that matter.
           </p>
         </motion.div>
 
@@ -133,7 +159,9 @@ export const HeroSection = () => {
           href="#about"
           onClick={(e: React.MouseEvent) => {
             e.preventDefault();
-            document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
+            document
+              .querySelector("#about")
+              ?.scrollIntoView({ behavior: "smooth" });
           }}
           className="flex items-center gap-2.5 text-white group overflow-hidden touch-manipulation"
           initial={{ y: 20, opacity: 0 }}
@@ -144,10 +172,16 @@ export const HeroSection = () => {
           <motion.span
             className="font-dm_sans font-light text-sm"
             animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+            transition={{
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2.5,
+            }}
           >
             →
           </motion.span>
+
           <span className="font-dm_sans font-light text-sm border-b border-white/30 group-hover:border-white transition-colors duration-300">
             Explore Our Vision
           </span>

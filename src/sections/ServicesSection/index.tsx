@@ -1,26 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SplitText } from "@/components/SplitText";
-
-const SERVICE_IMAGES = [
-  {
-    src: "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/ReJwRbXJwTFxetSzciMpxrBfK8A.jpeg",
-    aspect: "aspect-square",
-  },
-  {
-    src: "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/pqX1CuSJYsP7oDqUxXpKvHgP4VY.jpeg",
-    aspect: "aspect-square",
-  },
-  {
-    src: "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/5o0R1uytbLqum3oZFhynbfelw5w.jpeg",
-    aspect: "aspect-video",
-  },
-  {
-    src: "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/AtdiKWyuN2qHdjex8ctxe8TjV8.jpeg",
-    aspect: "aspect-[3/4]",
-  },
-];
+import { useState } from "react";
 
 const SERVICES = [
   { num: "01", label: "Interior Design" },
@@ -29,14 +11,22 @@ const SERVICES = [
   { num: "04", label: "Furniture Design" },
 ];
 
+const SERVICE_IMAGES = [
+  "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/ReJwRbXJwTFxetSzciMpxrBfK8A.jpeg",
+  "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/pqX1CuSJYsP7oDqUxXpKvHgP4VY.jpeg",
+  "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/5o0R1uytbLqum3oZFhynbfelw5w.jpeg",
+  "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/AtdiKWyuN2qHdjex8ctxe8TjV8.jpeg",
+];
+
 export const ServicesSection = () => {
   const { ref: headingRef } = useInView({ threshold: 0.1 });
   const { ref: listRef, inView: listInView } = useInView({ threshold: 0.1 });
-  const { ref: gridRef, inView: gridInView } = useInView({ threshold: 0.08 });
   const descRef = useScrollReveal<HTMLParagraphElement>();
 
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
-    <section className="relative bg-orange-50 w-full border-b border-black/30 pt-[70px] pb-[100px] px-5 md:px-[30px] overflow-hidden">
+    <section className="relative bg-orange-50 w-full border-b border-black/30 pt-16 pb-20 md:pt-20 md:pb-24 px-5 md:px-[30px] overflow-hidden">
       {/* Header */}
       <div
         ref={headingRef as React.RefObject<HTMLDivElement>}
@@ -59,55 +49,90 @@ export const ServicesSection = () => {
         </p>
       </div>
 
-      {/* Body: list + images */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 md:gap-8 max-w-[1680px]">
-
-        {/* Services list */}
-        <div ref={listRef as React.RefObject<HTMLDivElement>} className="md:w-[36%] flex flex-col gap-0">
+      <div className="flex flex-col lg:flex-row gap-10 md:gap-16 max-w-[1680px]">
+        {/* Services List */}
+        <div ref={listRef} className="lg:w-5/12 flex flex-col">
           {SERVICES.map((svc, i) => (
             <motion.div
               key={svc.num}
-              className="flex items-baseline gap-3 py-4 md:py-5 border-b border-black/10 group cursor-default"
+              className="group flex items-baseline gap-4 py-5 md:py-6 border-b border-black/10 cursor-pointer relative"
               initial={{ opacity: 0, x: -20 }}
               animate={listInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: i * 0.08 }}
-              whileHover={{ x: 6 }}
+              onHoverStart={() => setHoveredIndex(i)}
+              onHoverEnd={() => setHoveredIndex(null)}
             >
-              <span className="text-xs italic font-light font-newsreader text-black/40 min-w-[28px] transition-opacity group-hover:text-black/70">
+              <span className="text-xs italic font-light font-newsreader text-black/40 min-w-[32px] transition-all group-hover:text-black/70">
                 {svc.num}
               </span>
-              <h4 className="text-[22px] md:text-[26px] font-light font-dm_sans text-black leading-tight group-hover:opacity-70 transition-opacity duration-200">
+
+              <h4 className="text-[22px] md:text-[26px] font-light font-dm_sans text-black leading-tight group-hover:text-orange-800 transition-colors">
                 {svc.label}
               </h4>
-              <motion.span
-                className="ml-auto text-black/0 text-sm font-dm_sans font-light group-hover:text-black/40 transition-colors duration-200"
-              >
+
+              <span className="ml-auto text-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 text-black/30">
                 →
-              </motion.span>
+              </span>
+
+              <motion.div
+                className="absolute bottom-0 left-0 h-px bg-black origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: hoveredIndex === i ? 1 : 0 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
           ))}
         </div>
 
-        {/* Images grid */}
-        <div
-          ref={gridRef as React.RefObject<HTMLDivElement>}
-          className="md:w-[55%] grid grid-cols-2 gap-3"
-        >
-          {SERVICE_IMAGES.map((img, i) => (
-            <motion.div
-              key={i}
-              className={`overflow-hidden rounded-lg bg-stone-200 ${img.aspect} group`}
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={gridInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.75, ease: [0.33, 1, 0.68, 1], delay: i * 0.1 }}
-            >
-              <img
-                src={img.src}
-                alt=""
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        {/* Image Preview Area - FIXED */}
+        <div className="lg:w-7/12 relative min-h-[460px] md:min-h-[520px] lg:min-h-[560px] rounded-3xl overflow-hidden bg-stone-100 shadow-xl">
+          <AnimatePresence mode="wait">
+            {hoveredIndex !== null ? (
+              <motion.img
+                key={hoveredIndex}
+                src={SERVICE_IMAGES[hoveredIndex]}
+                alt={SERVICES[hoveredIndex].label}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1.08 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.75, ease: [0.33, 1, 0.68, 1] }}
               />
-            </motion.div>
-          ))}
+            ) : (
+              /* Default Collage - Now properly visible */
+              <div className="absolute inset-0 grid grid-cols-2 gap-3 p-4">
+                {SERVICE_IMAGES.map((src, i) => (
+                  <motion.div
+                    key={i}
+                    className="overflow-hidden rounded-2xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Hover Label */}
+          <AnimatePresence>
+            {hoveredIndex !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                className="absolute bottom-8 left-8 bg-black/80 text-white px-7 py-3.5 rounded-full text-sm font-light backdrop-blur-md"
+              >
+                {SERVICES[hoveredIndex].label}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

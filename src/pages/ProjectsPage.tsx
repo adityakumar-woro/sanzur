@@ -26,7 +26,7 @@ export const ProjectsPage = () => {
   const { ref: gridRef, inView: gridInView } = useInView({ threshold: 0.05 });
   const { ref: indexRef, inView: indexInView } = useInView({ threshold: 0.05 });
 
-  const gridProjects  = ALL_PROJECTS.slice(0, gridVisible);
+  const gridProjects = ALL_PROJECTS.slice(0, gridVisible);
   const indexProjects = ALL_PROJECTS;
 
   return (
@@ -36,7 +36,7 @@ export const ProjectsPage = () => {
         <div className="flex flex-col min-h-screen bg-orange-50">
           <Navbar />
 
-          {/* ── HERO ── */}
+          {/* HERO */}
           <header className="relative flex flex-col justify-end min-h-screen w-full overflow-hidden p-[30px]">
             <div className="absolute inset-0 bg-black/50 z-[1]" />
             <div className="absolute inset-0 z-0">
@@ -69,7 +69,7 @@ export const ProjectsPage = () => {
             </div>
           </header>
 
-          {/* ── PROJECT GRID ── */}
+          {/* PROJECT GRID */}
           <section className="w-full px-5 md:px-[30px] py-[80px]">
             <div
               ref={gridRef as React.RefObject<HTMLDivElement>}
@@ -90,7 +90,6 @@ export const ProjectsPage = () => {
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                  {/* Hover overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
                   <div className="absolute bottom-0 left-0 p-5 md:p-6 z-[2]">
                     <p className="text-white/70 text-xs uppercase tracking-widest mb-1">{project.type}</p>
@@ -98,7 +97,6 @@ export const ProjectsPage = () => {
                       {project.name}
                     </h2>
                   </div>
-                  {/* Arrow on hover */}
                   <div className="absolute top-4 right-4 w-10 h-10 rounded-full border border-white/0 group-hover:border-white/60 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                     <span className="text-white/0 group-hover:text-white/80 text-sm transition-colors duration-300">→</span>
                   </div>
@@ -111,7 +109,6 @@ export const ProjectsPage = () => {
                 className="flex justify-center mt-12"
                 initial={{ opacity: 0 }}
                 animate={gridInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.4 }}
               >
                 <button
                   onClick={() => setGridVisible((v) => Math.min(v + LOAD_MORE_COUNT, ALL_PROJECTS.length))}
@@ -125,7 +122,7 @@ export const ProjectsPage = () => {
 
           <div className="w-full h-px bg-black/10" />
 
-          {/* ── INDEX ── */}
+          {/* ALL PROJECTS INDEX */}
           <section className="w-full px-5 md:px-[30px] py-[80px]">
             <div className="overflow-hidden mb-12">
               <motion.h2
@@ -177,8 +174,8 @@ export const ProjectsPage = () => {
             </div>
           </section>
 
-          {/* ── UPCOMING ── */}
-          <section className="w-full px-5 md:px-[30px] py-[80px] bg-orange-100/60">
+          {/* UPCOMING PROJECTS - Extra bottom padding added */}
+          <section className="w-full px-5 md:px-[30px] py-[80px] pb-24 md:pb-32 bg-orange-100/60">
             <motion.h2
               className="font-light mb-10"
               style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
