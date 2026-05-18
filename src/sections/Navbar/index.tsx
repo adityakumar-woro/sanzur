@@ -63,13 +63,7 @@ export const Navbar = () => {
             ))}
           </div>
 
-          <motion.a
-            href="/contact"
-            className="hidden md:flex lg:absolute lg:left-1/2 lg:-translate-x-1/2 z-[2] text-white/75 hover:text-white text-[12px] font-dm_sans uppercase tracking-[0.16em] no-underline"
-            whileHover={{ y: -1 }}
-          >
-            Start a project
-          </motion.a>
+
 
           <button
             onClick={() => setIsOpen((v) => !v)}
