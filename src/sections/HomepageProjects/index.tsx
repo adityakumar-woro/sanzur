@@ -1,20 +1,20 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
-import villa2 from "@/assets/villa2.jpeg";
 import awadhi1 from "@/assets/awadhi1.jpeg";
+import { ahujaVillaImages, marLoungeImages, villa17Images } from "@/data/studio";
 
 const PROJECTS = [
   {
     id: "ahuja-villa",
     name: "Ahuja Villa",
     type: "Residential",
-    image: "https://framerusercontent.com/images/f2kdZ2VnYMzJohVsHO2VMhmqNE.jpeg",
+    image: ahujaVillaImages[0],
   },
   {
     id: "mar-lounge",
     name: "Mar Lounge",
     type: "Hospitality",
-    image: "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
+    image: marLoungeImages[0],
   },
   {
     id: "awadhi-jewels",
@@ -32,7 +32,7 @@ const PROJECTS = [
     id: "villa-17",
     name: "Villa 17",
     type: "Residential",
-    image: villa2,
+    image: villa17Images[0],
   },
 ];
 

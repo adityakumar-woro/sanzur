@@ -5,15 +5,11 @@ import { Footer } from "@/sections/Footer";
 import { CustomCursor } from "@/components/CustomCursor";
 import { PageWrapper } from "@/components/PageWrapper";
 import { useInView } from "@/hooks/useInView";
-import villa1 from "@/assets/villa1.jpeg";
-import villa2 from "@/assets/villa2.jpeg";
-import villa3 from "@/assets/villa3.jpeg";
-import villa4 from "@/assets/villa4.jpeg";
-import villa5 from "@/assets/villa5.jpeg";
 import awadhi1 from "@/assets/awadhi1.jpeg";
 import awadhi2 from "@/assets/awadhi2.jpeg";
 import awadhi3 from "@/assets/awadhi3.jpeg";
 import awadhi4 from "@/assets/awadhi4.jpeg";
+import { ahujaVillaDescription, ahujaVillaImages, marLoungeDescription, marLoungeImages, villa17Description, villa17Images } from "@/data/studio";
 
 const ALL_PROJECTS = [
   {
@@ -23,16 +19,10 @@ const ALL_PROJECTS = [
     type: "Residential",
     location: "India",
     year: "2025",
-    description:
-      "More than a residence, Ahuja Villa is designed as a complete living experience, balancing functionality, comfort, and refined luxury across 499 sqm. Fluid transitions connect living, dining, and lounge areas, while private zones offer intimacy and retreat. Expansive living spaces contrast with intimate family lounges and bedrooms, with soft lighting, neutral palettes, and layered materials enhancing mood and comfort. Bespoke joinery, furniture, and detailing create cohesion, while layered lighting and landscaped outdoors extend the experience. Every element is crafted for intuitive, timeless elegance.",
+    description: ahujaVillaDescription,
     caption: "Timeless elegance through thoughtful spatial flow and refined detailing.",
-    heroImage: "https://framerusercontent.com/images/f2kdZ2VnYMzJohVsHO2VMhmqNE.jpeg",
-    galleryImages: [
-      "https://framerusercontent.com/images/f2kdZ2VnYMzJohVsHO2VMhmqNE.jpeg",
-      "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
-      "https://framerusercontent.com/images/qzYmXsT9I39dWLW2f0Z5Wcv1XYg.jpeg",
-      "https://framerusercontent.com/images/TIej5lk8D06XR5B65DtRqzzLU.jpeg",
-    ],
+    heroImage: ahujaVillaImages[0],
+    galleryImages: ahujaVillaImages,
   },
   {
     id: "mar-lounge",
@@ -41,16 +31,10 @@ const ALL_PROJECTS = [
     type: "Hospitality",
     location: "India",
     year: "2024",
-    description:
-      "This project began as a quiet residential villa, a space once defined by intimate routines, family gatherings, and the gentle rhythm of everyday living. The design approach was rooted in understanding its existing character, allowing the transformation to evolve organically rather than imposing a new identity.\n\nMar Lounge is the outcome of this thoughtful transition. The three-level residence has been reimagined into a refined coffee and confectionery destination, complemented by a poolside terrace that enhances its experiential appeal. What sets the project apart is its seamless adaptability — the space feels inherently aligned with its new purpose, as though it was always meant to evolve this way.\n\nThe spatial journey has been carefully curated. The ground floor welcomes guests with a vibrant, energetic café environment, while the upper levels unfold into distinct atmospheres, each offering a unique mood and rhythm. The experience culminates at the terrace, where the poolside setting at golden hour creates a sense of quiet retreat — a complete sensory transition within a single structure.",
+    description: marLoungeDescription,
     caption: "A thoughtful transformation that honors the past while embracing a new purpose.",
-    heroImage: "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
-    galleryImages: [
-      "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
-      "https://framerusercontent.com/images/f2kdZ2VnYMzJohVsHO2VMhmqNE.jpeg",
-      "https://framerusercontent.com/images/qzYmXsT9I39dWLW2f0Z5Wcv1XYg.jpeg",
-      "https://framerusercontent.com/images/TIej5lk8D06XR5B65DtRqzzLU.jpeg",
-    ],
+    heroImage: marLoungeImages[0],
+    galleryImages: marLoungeImages,
   },
   {
     id: "awadhi-jewels",
@@ -79,8 +63,8 @@ const ALL_PROJECTS = [
     galleryImages: [
       "https://framerusercontent.com/images/TIej5lk8D06XR5B65DtRqzzLU.jpeg",
       "https://framerusercontent.com/images/pqX1CuSJYsP7oDqUxXpKvHgP4VY.jpeg",
-      "https://framerusercontent.com/images/f2kdZ2VnYMzJohVsHO2VMhmqNE.jpeg",
-      "https://framerusercontent.com/images/ztk37bNpQiL8L10UgVszhD7OSk.jpeg",
+      "https://framerusercontent.com/images/TIej5lk8D06XR5B65DtRqzzLU.jpeg",
+      "https://framerusercontent.com/images/pqX1CuSJYsP7oDqUxXpKvHgP4VY.jpeg",
     ],
   },
   {
@@ -90,11 +74,10 @@ const ALL_PROJECTS = [
     type: "Residential",
     location: "India",
     year: "2024",
-    description:
-      "Luxury, to us, is never about excess; it is defined by a quiet confidence, where a space makes you feel completely at ease from the moment you arrive. Villa 17 was conceived around this very idea.\n\nEach space has been thoughtfully designed to serve the people who inhabit it. The master bedroom offers a sense of enveloping comfort at the end of a long day, the kitchen is both generous and intuitive — inviting moments of gathering and creation — while the dining area, with its interplay of marble and soft lighting, transforms even the most ordinary evenings into something memorable.\n\nThe response from those who have experienced the home has been deeply telling — a reluctance to leave, a desire to linger. For us, there is no greater measure of success than that.",
+    description: villa17Description,
     caption: "Quiet luxury where comfort and thoughtful design create a desire to stay.",
-    heroImage: villa2,
-    galleryImages: [villa1, villa3, villa4, villa5],
+    heroImage: villa17Images[0],
+    galleryImages: villa17Images,
   },
 ];
 
@@ -132,7 +115,7 @@ export const ProjectDetailPage = () => {
           <Navbar />
 
           {/* HERO */}
-          <header className="relative flex flex-col justify-end min-h-[85vh] w-full overflow-hidden p-[30px]">
+          <header className="relative flex flex-col justify-end min-h-[74vh] w-full overflow-hidden p-5 md:p-8">
             <div className="absolute inset-0 z-0">
               <img
                 src={project.heroImage}
@@ -251,6 +234,24 @@ export const ProjectDetailPage = () => {
                 <img src={project.galleryImages[3] ?? project.galleryImages[0]} alt="" className="w-full h-full object-cover" />
               </div>
             </motion.div>
+
+            {project.galleryImages.length > 4 && (
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-12"
+                initial={{ opacity: 0, y: 30 }}
+                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.38, ease: EASE }}
+              >
+                {project.galleryImages.slice(4).map((image, index) => (
+                  <div
+                    key={`${image}-${index}`}
+                    className={`${index % 5 === 0 ? "lg:col-span-2" : ""} overflow-hidden aspect-[4/3] bg-stone-200`}
+                  >
+                    <img src={image} alt={`${project.name} view ${index + 5}`} className="w-full h-full object-cover" loading="lazy" />
+                  </div>
+                ))}
+              </motion.div>
+            )}
           </section>
 
           {/* NEXT PROJECTS - Extra bottom padding added */}
