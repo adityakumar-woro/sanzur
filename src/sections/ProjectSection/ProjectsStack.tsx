@@ -15,7 +15,6 @@ const StackCard = ({
   index: number;
   total: number;
 }) => {
-  const hoverRef = useRef<HTMLDivElement>(null);
   const i = index;
   const n = total;
   const step = n > 1 ? 1 / (n - 1) : 1;
@@ -39,21 +38,6 @@ const StackCard = ({
     [1, i < n - 1 ? 0.94 : 1]
   );
 
-  const onMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const xPct = (e.clientX - rect.left) / rect.width - 0.5;
-    const yPct = (e.clientY - rect.top) / rect.height - 0.5;
-    if (hoverRef.current) {
-      hoverRef.current.style.transform = `scale(1.06) translate(${xPct * 12}px, ${yPct * 8}px)`;
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (hoverRef.current) {
-      hoverRef.current.style.transform = "scale(1) translate(0, 0)";
-    }
-  };
-
   return (
     <motion.div
       className="absolute inset-0 will-change-transform"
@@ -62,8 +46,6 @@ const StackCard = ({
       <a
         href={data.href}
         className="relative flex flex-col h-full w-full overflow-hidden px-[30px] py-[100px] justify-between"
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
       >
         {/* Number */}
         <div className="relative z-[2]">
@@ -85,7 +67,6 @@ const StackCard = ({
             </h5>
             <motion.div
               className="inline-flex items-center gap-2 text-white/60 text-sm font-dm_sans font-light mt-4"
-              whileHover={{ x: 5 }}
             >
               <span>→</span>
               <span className="border-b border-white/30">View Project</span>
@@ -96,12 +77,10 @@ const StackCard = ({
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none" />
 
-        {/* Background image with hover drift */}
+        {/* Background image */}
         <div className="absolute inset-0 overflow-hidden z-0">
           <div
-            ref={hoverRef}
             className="w-full h-full"
-            style={{ transition: "transform 0.6s cubic-bezier(0.33,1,0.68,1)" }}
           >
             <img
               src={data.imageSrc}

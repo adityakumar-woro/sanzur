@@ -63,11 +63,10 @@ export const HomepageProjects = () => {
         </div>
         <motion.a
           href="/projects"
-          className="hidden md:inline-flex items-center gap-2 text-sm font-light font-dm_sans text-black/50 hover:text-black no-underline transition-colors duration-200"
+          className="hidden md:inline-flex items-center gap-2 text-sm font-light font-dm_sans text-black/50 no-underline"
           initial={{ opacity: 0 }}
           animate={headingInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
-          whileHover={{ x: 4 }}
         >
           <span>View All</span>
           <span>→</span>
@@ -83,7 +82,7 @@ export const HomepageProjects = () => {
           <motion.a
             key={project.id}
             href={`/projects/${project.id}`}
-            className="group relative block overflow-hidden aspect-[4/3] no-underline"
+          className="relative block overflow-hidden aspect-[4/3] no-underline"
             initial={{ opacity: 0, y: 30 }}
             animate={gridInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
@@ -92,14 +91,14 @@ export const HomepageProjects = () => {
             <img
               src={project.image}
               alt={project.name}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover"
             />
 
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-            {/* Hover darkening */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+            {/* Surface depth */}
+          <div className="absolute inset-0 bg-black/10" />
 
             {/* Project info */}
             <div className="absolute bottom-0 left-0 p-5 md:p-6 z-[2]">
@@ -114,9 +113,9 @@ export const HomepageProjects = () => {
               </h3>
             </div>
 
-            {/* Arrow on hover */}
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full border border-white/0 group-hover:border-white/60 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-              <span className="text-white/0 group-hover:text-white/80 text-sm transition-colors duration-300">
+            {/* Arrow */}
+          <div className="absolute top-4 right-4 w-10 h-10 rounded-full border border-white/50 flex items-center justify-center">
+            <span className="text-white/80 text-sm">
                 →
               </span>
             </div>
@@ -128,7 +127,7 @@ export const HomepageProjects = () => {
       <div className="flex justify-center mt-10 md:hidden">
         <a
           href="/projects"
-          className="border border-black text-black text-sm font-light font-dm_sans px-10 py-4 hover:bg-black hover:text-white transition-colors duration-300 no-underline"
+          className="border border-black text-black text-sm font-light font-dm_sans px-10 py-4 no-underline"
         >
           View All Projects
         </a>

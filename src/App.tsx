@@ -2,33 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
-import { images, process, projects, services } from "@/data/studio";
+import { articles, images, process, projects, services, studio } from "@/data/studio";
 
-const EASE = [0.33, 1, 0.68, 1] as const;
-const REVEAL = {
-  hidden: { opacity: 0, y: 46 },
-  visible: { opacity: 1, y: 0 },
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const reveal = {
+  hidden: { opacity: 0, y: 42, filter: "blur(10px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
-const STAGGER = {
+
+const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
+  visible: { transition: { staggerChildren: 0.09 } },
 };
 
 const decorItems = [
   {
     title: "Hand-painted Bowls",
-    material: "Wood · ceramic inlay · artisanal color",
+    material: "Wood, ceramic inlay, artisanal color",
     image: "/home-decor/artisan-bowls.jpeg",
   },
   {
     title: "Collector's Chess Set",
-    material: "Carved wood · library styling · heirloom detail",
+    material: "Carved wood, library styling, heirloom detail",
     image: "/home-decor/wooden-chess.jpeg",
   },
   {
     title: "Vintage Telephone",
-    material: "Polished timber · brass accents · study object",
+    material: "Polished timber, brass accents, study object",
     image: "/home-decor/vintage-telephone.jpeg",
   },
 ];
@@ -52,372 +53,331 @@ const faqs = [
   },
 ];
 
-const AtmosphericCanvas = ({ tone = "dark" }: { tone?: "dark" | "light" }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const ScrollScene = ({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) => {
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [70, -70]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.99]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let frame = 0;
-    let animationId = 0;
-
-    const resize = () => {
-      const ratio = window.devicePixelRatio || 1;
-      canvas.width = Math.floor(canvas.offsetWidth * ratio);
-      canvas.height = Math.floor(canvas.offsetHeight * ratio);
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    };
-
-    const draw = () => {
-      frame += 0.006;
-      const width = canvas.offsetWidth;
-      const height = canvas.offsetHeight;
-      ctx.clearRect(0, 0, width, height);
-
-      const base = tone === "dark" ? "201, 173, 115" : "18, 17, 15";
-      for (let i = 0; i < 36; i += 1) {
-        const x = (Math.sin(frame + i * 0.72) * 0.5 + 0.5) * width;
-        const y = (Math.cos(frame * 0.8 + i * 0.41) * 0.5 + 0.5) * height;
-        const radius = 60 + ((i * 29) % 160);
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        gradient.addColorStop(0, `rgba(${base}, ${tone === "dark" ? 0.095 : 0.055})`);
-        gradient.addColorStop(1, `rgba(${base}, 0)`);
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.strokeStyle = tone === "dark" ? "rgba(255,255,255,0.035)" : "rgba(18,17,15,0.045)";
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 8; i += 1) {
-        const y = (height / 8) * i + Math.sin(frame + i) * 14;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.bezierCurveTo(width * 0.32, y + Math.sin(frame + i) * 44, width * 0.66, y - 36, width, y + 16);
-        ctx.stroke();
-      }
-
-      animationId = requestAnimationFrame(draw);
-    };
-
-    resize();
-    draw();
-    window.addEventListener("resize", resize);
-    return () => {
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationId);
-    };
-  }, [tone]);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full pointer-events-none" aria-hidden="true" />;
+  return (
+    <motion.section
+      ref={ref}
+      style={{ scale }}
+      className={`relative overflow-hidden px-5 py-20 md:px-8 md:py-28 ${dark ? "bg-[#11100e] text-white" : "bg-[#e8dfd0] text-[#12110f]"}`}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.18 }}
+      variants={stagger}
+    >
+      <motion.div
+        style={{ y }}
+        className={`absolute -right-28 top-16 h-[26rem] w-[26rem] rounded-full blur-3xl ${dark ? "bg-[#c9ad73]/14" : "bg-[#c9ad73]/24"}`}
+      />
+      <motion.div
+        className={`absolute -left-20 bottom-[-10rem] h-[30rem] w-[30rem] rounded-full blur-3xl ${dark ? "bg-[#3b4b3f]/18" : "bg-[#59664f]/14"}`}
+        animate={{ x: [0, 34, 0], scale: [1, 1.08, 1] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div className="relative z-10">{children}</div>
+    </motion.section>
+  );
 };
 
+const WebGLDepthField = () => {
+  const mountRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    let cleanup: (() => void) | undefined;
+
+    import("three").then((THREE) => {
+      const mount = mountRef.current;
+      if (!active || !mount) return;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
+      mount.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 100);
+      camera.position.z = 8;
+
+      const material = new THREE.MeshBasicMaterial({ color: 0xc9ad73, transparent: true, opacity: 0.15, wireframe: true });
+      const mesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1.8, 0.18, 160, 12), material);
+      mesh.position.set(2.2, -0.2, 0);
+      scene.add(mesh);
+
+      let frame = 0;
+      let animationId = 0;
+      const resize = () => {
+        const width = mount.clientWidth;
+        const height = mount.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+      const animate = () => {
+        frame += 0.006;
+        mesh.rotation.x = Math.sin(frame) * 0.25;
+        mesh.rotation.y = frame;
+        renderer.render(scene, camera);
+        animationId = requestAnimationFrame(animate);
+      };
+
+      resize();
+      animate();
+      window.addEventListener("resize", resize);
+      cleanup = () => {
+        window.removeEventListener("resize", resize);
+        cancelAnimationFrame(animationId);
+        mesh.geometry.dispose();
+        material.dispose();
+        renderer.dispose();
+        renderer.domElement.remove();
+      };
+    });
+
+    return () => {
+      active = false;
+      cleanup?.();
+    };
+  }, []);
+
+  return <div ref={mountRef} className="absolute inset-0 pointer-events-none opacity-80" aria-hidden="true" />;
+};
+
+const SectionTitle = ({ eyebrow, title, copy, light = false }: { eyebrow: string; title: string; copy?: string; light?: boolean }) => (
+  <motion.div variants={reveal} transition={{ duration: 0.8, ease: EASE }}>
+    <p className={`mb-5 text-[11px] uppercase tracking-[0.26em] ${light ? "text-[#c9ad73]" : "text-black/42"}`}>{eyebrow}</p>
+    <h2 className="font-newsreader font-light leading-[0.94]" style={{ fontSize: "clamp(3.2rem, 8vw, 8.6rem)" }}>
+      {title}
+    </h2>
+    {copy ? <p className={`mt-7 max-w-2xl text-base leading-relaxed md:text-lg ${light ? "text-white/62" : "text-black/62"}`}>{copy}</p> : null}
+  </motion.div>
+);
+
 export const App = () => {
-  const [hoveredProject, setHoveredProject] = useState(0);
   const [openFaq, setOpenFaq] = useState(0);
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1.08, 1]);
+  const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
 
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#11100e] text-white font-dm_sans selection:bg-[#c9ad73] selection:text-[#11100e]">
       <Navbar />
-
       <main>
-        <header ref={heroRef} className="relative min-h-screen overflow-hidden bg-[#e9e1d1] text-[#12110f]">
-          <AtmosphericCanvas tone="light" />
-          <motion.img
-            src={images.hero}
-            alt=""
-            className="absolute right-0 top-0 hidden h-full w-[44vw] object-cover lg:block"
-            style={{ y: heroY, scale: heroScale }}
-          />
-          <div className="absolute right-0 top-0 hidden h-full w-[44vw] bg-gradient-to-l from-transparent to-[#e9e1d1] lg:block" />
+        <header ref={heroRef} className="relative min-h-screen overflow-hidden bg-[#11100e]">
+          <WebGLDepthField />
+          <motion.img src={images.hero} alt="Sanzur interior" className="absolute inset-0 h-full w-full object-cover opacity-60" style={{ y: heroY, scale: heroScale }} />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_25%,rgba(201,173,115,0.22),transparent_32%),linear-gradient(90deg,rgba(17,16,14,0.96),rgba(17,16,14,0.62)_50%,rgba(17,16,14,0.24))]" />
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#11100e] to-transparent" />
 
-          <motion.div
-            className="relative z-10 min-h-screen px-5 md:px-8 pt-20 pb-8 flex flex-col justify-end"
-            initial="hidden"
-            animate="visible"
-            variants={STAGGER}
-          >
-            <motion.div variants={REVEAL} transition={{ duration: 0.85, ease: EASE }} className="mb-8 flex items-center gap-4">
-              <span className="h-px w-16 bg-[#12110f]/35" />
-              <span className="text-[11px] uppercase tracking-[0.24em] text-[#12110f]/55">Interior Architecture Studio</span>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-end">
-              <div>
-                <motion.h1
-                  variants={REVEAL}
-                  transition={{ duration: 1, ease: EASE }}
-                  className="font-newsreader font-light leading-[0.83] tracking-normal"
-                  style={{ fontSize: "clamp(5rem, 14vw, 16rem)" }}
-                >
-                  Reimagine
-                  <br />
-                  Your Space
-                </motion.h1>
-              </div>
-
-              <motion.div variants={REVEAL} transition={{ duration: 0.85, ease: EASE }} className="grid grid-cols-[0.75fr_1fr] gap-4 items-end lg:pb-6">
-                <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="aspect-[3/4] overflow-hidden bg-[#d8ccba]">
-                  <img src={images.editorialThree} alt="" className="h-full w-full object-cover" />
-                </motion.div>
-                <div>
-                  <p className="mb-6 max-w-md text-base md:text-lg leading-relaxed text-[#12110f]/68">
-                    A premium studio experience blending soulful interiors, sharp architectural planning, and collectible details.
-                  </p>
-                  <motion.a
-                    href="/contact"
-                    className="inline-flex rounded-full bg-[#12110f] px-6 py-4 text-white no-underline text-sm uppercase tracking-[0.16em]"
-                    whileHover={{ scale: 1.04, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Get started
-                  </motion.a>
+          <motion.div className="relative z-10 flex min-h-screen flex-col justify-end px-5 pb-8 pt-24 md:px-8" style={{ y: heroTextY }} initial="hidden" animate="visible" variants={stagger}>
+            <motion.p variants={reveal} transition={{ duration: 0.85, ease: EASE }} className="mb-7 text-[11px] uppercase tracking-[0.28em] text-[#c9ad73]">
+              Interior Architecture Studio - {studio.location}
+            </motion.p>
+            <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.12fr_0.88fr]">
+              <motion.h1 variants={reveal} transition={{ duration: 1, ease: EASE }} className="font-newsreader font-light leading-[0.82]" style={{ fontSize: "clamp(5.4rem, 15vw, 17rem)" }}>
+                Spatial
+                <br />
+                Alchemy
+              </motion.h1>
+              <motion.div variants={reveal} transition={{ duration: 0.9, ease: EASE }} className="border border-white/14 bg-white/[0.07] p-5 backdrop-blur-xl md:p-6">
+                <p className="max-w-xl text-lg leading-relaxed text-white/70">
+                  Luxury interiors, architectural planning, and collectible details for residences, retail, and hospitality spaces.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href="/contact" className="rounded-full bg-[#e9e1d1] px-6 py-4 text-sm uppercase tracking-[0.16em] text-[#12110f] no-underline">Start a project</a>
+                  <a href="/projects" className="rounded-full border border-white/18 px-6 py-4 text-sm uppercase tracking-[0.16em] text-white no-underline">View work</a>
                 </div>
               </motion.div>
             </div>
-
-            <motion.div variants={REVEAL} transition={{ duration: 0.85, ease: EASE }} className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-[#12110f]/15 pt-5">
-              {["100+ curated rooms", "Residential · Retail · Hospitality", "Concept to handover"].map((item) => (
-                <p key={item} className="text-sm uppercase tracking-[0.16em] text-[#12110f]/50">{item}</p>
+            <motion.div variants={reveal} transition={{ duration: 0.85, ease: EASE }} className="mt-10 grid grid-cols-2 gap-4 border-t border-white/12 pt-6 md:grid-cols-4">
+              {["100+ curated rooms", "Residential, retail, hospitality", "Concept to handover", "Quiet luxury language"].map((item) => (
+                <p key={item} className="text-[11px] uppercase tracking-[0.18em] text-white/48">{item}</p>
               ))}
             </motion.div>
           </motion.div>
         </header>
 
-        <section className="overflow-hidden bg-[#12110f] py-5 text-white/70">
-          <motion.div className="flex whitespace-nowrap" animate={{ x: ["0%", "-50%"] }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }}>
+        <section className="overflow-hidden border-y border-white/10 bg-[#11100e] py-5 text-white/64">
+          <motion.div className="flex whitespace-nowrap" animate={{ x: ["0%", "-50%"] }} transition={{ duration: 26, repeat: Infinity, ease: "linear" }}>
             {[...Array(2)].map((_, loop) => (
               <div key={loop} className="flex">
-                {["SANZUR", "ROOM FOR EXPERIENCE", "INTERIOR ARCHITECTURE", "LUXURY DECOR", "TURNKEY DESIGN"].map((item) => (
-                  <span key={`${loop}-${item}`} className="mx-8 text-[12px] uppercase tracking-[0.24em]">{item}</span>
+                {["SANZUR", "QUIET LUXURY", "INTERIOR ARCHITECTURE", "PRIVATE RESIDENCES", "RETAIL AND HOSPITALITY", "TURNKEY DESIGN"].map((item) => (
+                  <span key={`${loop}-${item}`} className="mx-8 text-[12px] uppercase tracking-[0.26em]">{item}</span>
                 ))}
               </div>
             ))}
           </motion.div>
         </section>
 
-        <motion.section className="relative overflow-hidden bg-[#ebe5d8] text-[#12110f] px-5 md:px-8 py-20 md:py-28" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.22 }} variants={STAGGER}>
-          <AtmosphericCanvas tone="light" />
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-20 items-start">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-[11px] uppercase tracking-[0.22em] text-black/45 mb-6">Studio Ethos</p>
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#d8ccba]">
-                <motion.img
-                  src={images.about}
-                  alt="Sanzur studio ethos interior detail"
-                  className="h-full w-full object-cover"
-                  initial={{ scale: 1.12 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.35, ease: EASE }}
-                />
+        <ScrollScene>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-20">
+            <motion.div variants={reveal} transition={{ duration: 0.8, ease: EASE }} className="lg:sticky lg:top-24 h-fit">
+              <p className="mb-5 text-[11px] uppercase tracking-[0.24em] text-black/42">Studio Ethos</p>
+              <div className="aspect-[4/5] overflow-hidden bg-[#d4c7b6]">
+                <motion.img src={images.about} alt="Sanzur studio ethos" className="h-full w-full object-cover" initial={{ scale: 1.14, filter: "blur(6px)" }} whileInView={{ scale: 1, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 1.45, ease: EASE }} />
               </div>
             </motion.div>
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <h2 className="font-newsreader font-light leading-[1]" style={{ fontSize: "clamp(2.8rem, 7vw, 7rem)" }}>
-                Rooms that feel composed before they feel decorated.
-              </h2>
-              <p className="mt-8 text-black/65 max-w-2xl text-base md:text-lg leading-relaxed">
-                We design private residences, boutique retail, hospitality spaces, and lifestyle destinations with a language that is tactile, measured, and deeply personal.
-              </p>
-              <div className="mt-12 grid grid-cols-2 gap-4 max-w-2xl">
-                {[images.editorialOne, images.editorialFive].map((image) => (
-                  <motion.div key={image} className="aspect-[5/4] overflow-hidden bg-[#d8ccba]" whileHover={{ scale: 0.98 }}>
-                    <img src={image} alt="" className="h-full w-full object-cover" loading="lazy" />
+            <div>
+              <SectionTitle eyebrow="Philosophy" title="Luxury begins where a room feels inevitable." copy="Sanzur designs with atmosphere first, then resolves the plan, materials, lighting, joinery, and styling until the experience feels effortless." />
+              <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+                {["Mood", "Plan", "Detail", "Handover"].map((title, index) => (
+                  <motion.div key={title} variants={reveal} transition={{ duration: 0.7, ease: EASE }} className="border border-black/10 bg-white/28 p-6 backdrop-blur-md">
+                    <p className="mb-8 text-sm text-black/36">{String(index + 1).padStart(2, "0")}</p>
+                    <h3 className="font-newsreader text-4xl font-light leading-none">{title}</h3>
+                    <p className="mt-5 leading-relaxed text-black/58">Tactile restraint, spatial rhythm, and precise execution aligned into one calm design language.</p>
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
-          </div>
-        </motion.section>
-
-        <motion.section className="relative bg-[#12110f] text-white px-5 md:px-8 py-20 md:py-28 overflow-hidden" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={STAGGER}>
-          <AtmosphericCanvas />
-          <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }} className="relative z-10 flex items-end justify-between gap-6 mb-12">
-            <div>
-              <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-3">Projects</p>
-              <h2 className="font-newsreader font-light text-5xl md:text-8xl leading-none">Delivered Work</h2>
             </div>
-            <a href="/projects" className="hidden md:inline-flex text-white/70 hover:text-white no-underline text-sm uppercase tracking-[0.16em]">View all</a>
-          </motion.div>
+          </div>
+        </ScrollScene>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_430px] gap-10 items-start">
-            <div className="divide-y divide-white/12 border-y border-white/12">
-              {projects.slice(0, 5).map((project, index) => (
-                <motion.a
-                  key={project.id}
-                  href={`/projects/${project.id}`}
-                  onMouseEnter={() => setHoveredProject(index)}
-                  className="group grid grid-cols-[64px_1fr] md:grid-cols-[76px_1fr_180px_140px] gap-4 md:gap-8 items-center py-7 no-underline text-white"
-                  variants={REVEAL}
-                  transition={{ duration: 0.65, ease: EASE }}
-                  whileHover={{ x: 12 }}
-                >
-                  <span className="text-white/35 text-sm">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="font-newsreader font-light text-4xl md:text-6xl group-hover:text-[#c9ad73] transition-colors">{project.name}</span>
-                  <span className="text-white/45 text-sm uppercase tracking-[0.14em]">{project.type}</span>
-                  <span className="text-white/35 text-sm hidden md:block">{project.location}</span>
-                </motion.a>
+        <ScrollScene dark>
+          <div className="mb-14 grid grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_0.7fr]">
+            <SectionTitle eyebrow="Signature Projects" title="A portfolio shaped around feeling, flow, and finish." copy="From private villas to destination lounges, every project is presented as a complete living or guest experience." light />
+            <motion.p variants={reveal} transition={{ duration: 0.75, ease: EASE }} className="max-w-xl text-white/56 leading-relaxed lg:justify-self-end">
+              Warmth, calm, precision, and spatial rhythm define the Sanzur signature.
+            </motion.p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+            {projects.slice(0, 5).map((project, index) => (
+              <motion.a key={project.id} href={`/projects/${project.id}`} variants={reveal} transition={{ duration: 0.75, ease: EASE }} className={`relative min-h-[420px] overflow-hidden border border-white/12 bg-white/[0.045] text-white no-underline ${index === 0 ? "lg:col-span-7 lg:min-h-[640px]" : "lg:col-span-5"}`}>
+                <motion.img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover opacity-75" initial={{ scale: 1.1, filter: "blur(7px)" }} whileInView={{ scale: 1, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 1.25, ease: EASE }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#11100e] via-[#11100e]/28 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5 md:p-7">
+                  <div className="mb-5 flex items-center justify-between gap-4 text-[11px] uppercase tracking-[0.2em] text-white/54">
+                    <span>{project.type}</span>
+                    <span>{project.year}</span>
+                  </div>
+                  <h3 className="font-newsreader text-5xl font-light leading-none md:text-7xl">{project.name}</h3>
+                  <p className="mt-5 max-w-xl text-white/64 leading-relaxed">{project.summary}</p>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        </ScrollScene>
+
+        <ScrollScene>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
+            <div className="lg:sticky lg:top-28 h-fit">
+              <SectionTitle eyebrow="What We Offer" title="Concept, detail, and delivery in one studio." copy="A structured design process with enough clarity to imagine the result before the work begins." />
+              <a href="/services" className="mt-8 inline-flex border-b border-black/30 pb-2 text-sm uppercase tracking-[0.16em] text-[#12110f] no-underline">Explore services</a>
+            </div>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              {services.map((service, index) => (
+                <motion.article key={service.name} variants={reveal} transition={{ duration: 0.68, ease: EASE }} className="border border-black/10 bg-[#f2eadf] p-4">
+                  <div className="aspect-[5/4] overflow-hidden bg-[#d4c7b6]">
+                    <img src={service.image} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="p-3 pt-6">
+                    <p className="mb-4 text-sm text-black/34">{String(index + 1).padStart(2, "0")}</p>
+                    <h3 className="font-newsreader text-4xl font-light leading-none">{service.name}</h3>
+                    <p className="mt-5 leading-relaxed text-black/58">{service.description}</p>
+                  </div>
+                </motion.article>
               ))}
             </div>
-            <motion.div className="sticky top-28 hidden lg:block aspect-[4/5] overflow-hidden bg-[#2a261f]" layout>
-              <motion.img
-                key={projects[hoveredProject]?.image}
-                src={projects[hoveredProject]?.image}
-                alt={projects[hoveredProject]?.name}
-                className="h-full w-full object-cover"
-                initial={{ opacity: 0, scale: 1.08 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.65, ease: EASE }}
-              />
-            </motion.div>
           </div>
-        </motion.section>
+        </ScrollScene>
 
-        <motion.section className="bg-[#ebe5d8] text-[#12110f] px-5 md:px-8 py-20 md:py-28" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }} variants={STAGGER}>
-          <div className="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr] gap-12 lg:gap-20">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }} className="lg:sticky lg:top-28 h-fit">
-              <p className="text-black/45 text-[11px] uppercase tracking-[0.22em] mb-4">What we offer</p>
-              <h2 className="font-newsreader font-light text-5xl md:text-7xl leading-none">Expert interior design solutions.</h2>
-              <p className="mt-7 text-black/62 text-lg leading-relaxed max-w-md">A design process with enough clarity to imagine the result before the work begins.</p>
-              <a href="/services" className="inline-flex mt-8 text-sm uppercase tracking-[0.16em] border-b border-black/30 pb-2 no-underline text-[#12110f] hover:border-black">
-                Explore services
-              </a>
-            </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {services.slice(0, 3).map((service, index) => (
-                <motion.div key={service.name} variants={REVEAL} whileHover={{ y: -10 }} transition={{ duration: 0.42, ease: EASE }} className="border border-black/12 bg-[#f3eee5] p-4">
-                  <div className="aspect-[4/5] overflow-hidden mb-6">
-                    <img src={service.image} alt="" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-                  </div>
-                  <p className="text-black/35 text-sm mb-2">{index === 0 ? "6K+ Completed" : "Expertise"}</p>
-                  <h3 className="font-newsreader font-light text-3xl mb-4">{service.name}</h3>
-                  <p className="text-black/62 leading-relaxed">{service.description}</p>
+        <ScrollScene dark>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
+            <SectionTitle eyebrow="The Journey" title="A cinematic process with practical control." copy="The work moves from feeling to documentation to site, so imagination and execution stay connected." light />
+            <div className="divide-y divide-white/12 border-y border-white/12">
+              {process.map((item, index) => (
+                <motion.div key={item} variants={reveal} transition={{ duration: 0.68, ease: EASE }} className="grid grid-cols-[72px_1fr] gap-6 py-7">
+                  <span className="font-newsreader text-4xl font-light text-[#c9ad73]">{String(index + 1).padStart(2, "0")}</span>
+                  <p className="text-xl font-light leading-snug text-white/78 md:text-3xl">{item}</p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </motion.section>
+        </ScrollScene>
 
-        <motion.section className="bg-[#ebe5d8] text-[#12110f] px-5 md:px-8 py-20 md:py-28 border-t border-black/10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={STAGGER}>
-          <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 mb-12">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-black/45 text-[11px] uppercase tracking-[0.22em] mb-5">Home Decor</p>
-              <h2 className="font-newsreader font-light text-5xl md:text-7xl leading-none">Objects that bring memory into a room.</h2>
-            </motion.div>
-            <motion.p variants={REVEAL} transition={{ duration: 0.75, ease: EASE }} className="text-black/62 text-lg leading-relaxed max-w-2xl lg:pt-8">
-              Curated accents, handcrafted pieces, and conversation objects selected to make interiors feel collected, personal, and quietly luxurious.
+        <ScrollScene>
+          <div className="mb-12 grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <SectionTitle eyebrow="Home Decor" title="Objects that make an interior feel collected." />
+            <motion.p variants={reveal} transition={{ duration: 0.75, ease: EASE }} className="max-w-2xl text-lg leading-relaxed text-black/62 lg:pt-8">
+              Curated accents, handcrafted pieces, and conversation objects selected to make interiors feel personal, grounded, and quietly luxurious.
             </motion.p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {decorItems.map((item, index) => (
-              <motion.article key={item.title} variants={REVEAL} whileHover={{ y: -10 }} transition={{ duration: 0.42, ease: EASE }} className="group">
-                <div className="aspect-[4/3] overflow-hidden bg-[#d8ccba]">
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+              <motion.article key={item.title} variants={reveal} transition={{ duration: 0.68, ease: EASE }}>
+                <div className="aspect-[4/3] overflow-hidden bg-[#d4c7b6]">
+                  <img src={item.image} alt={item.title} className="h-full w-full object-cover" loading="lazy" />
                 </div>
-                <div className="pt-5 flex items-start justify-between gap-5 border-t border-black/12 mt-5">
+                <div className="mt-5 flex items-start justify-between gap-5 border-t border-black/12 pt-5">
                   <div>
-                    <p className="text-black/35 text-sm mb-2">{String(index + 1).padStart(2, "0")}</p>
-                    <h3 className="font-newsreader font-light text-3xl leading-none">{item.title}</h3>
+                    <p className="mb-2 text-sm text-black/35">{String(index + 1).padStart(2, "0")}</p>
+                    <h3 className="font-newsreader text-3xl font-light leading-none">{item.title}</h3>
                   </div>
-                  <p className="text-black/52 text-sm leading-relaxed max-w-[180px] text-right">{item.material}</p>
+                  <p className="max-w-[180px] text-right text-sm leading-relaxed text-black/52">{item.material}</p>
                 </div>
               </motion.article>
             ))}
           </div>
-        </motion.section>
+        </ScrollScene>
 
-        <motion.section className="relative bg-[#12110f] text-white px-5 md:px-8 py-20 md:py-28 overflow-hidden" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={STAGGER}>
-          <AtmosphericCanvas />
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">Process</p>
-              <h2 className="font-newsreader font-light leading-[1]" style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}>Designed slowly. Built precisely.</h2>
-            </motion.div>
-            <div className="divide-y divide-white/12">
-              {process.map((item, index) => (
-                <motion.div key={item} variants={REVEAL} transition={{ duration: 0.65, ease: EASE }} className="flex gap-8 py-6">
-                  <span className="text-[#c9ad73]">{String(index + 1).padStart(2, "0")}</span>
-                  <p className="text-white/78 text-xl md:text-2xl font-light">{item}</p>
-                </motion.div>
-              ))}
-            </div>
+        <ScrollScene dark>
+          <div className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <SectionTitle eyebrow="Journal" title="Notes on materials, mood, and modern luxury." light />
+            <a href="/blogs" className="text-sm uppercase tracking-[0.16em] text-white/64 no-underline">Read the journal</a>
           </div>
-          <div className="relative z-10 mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[images.editorialOne, images.editorialTwo, images.editorialFour, images.aboutHome].map((image, index) => (
-              <motion.div key={index} variants={REVEAL} whileHover={{ scale: 0.985 }} className="aspect-[3/4] overflow-hidden bg-[#2a261f]">
-                <img src={image} alt="" className="h-full w-full object-cover" />
-              </motion.div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {articles.slice(0, 3).map((article, index) => (
+              <motion.a key={article.id} href={`/blogs/${article.id}`} variants={reveal} transition={{ duration: 0.68, ease: EASE }} className="border border-white/12 bg-white/[0.05] p-4 text-white no-underline backdrop-blur-md">
+                <div className="aspect-[4/3] overflow-hidden bg-[#2a261f]">
+                  <img src={article.image} alt={article.title} className="h-full w-full object-cover" loading="lazy" />
+                </div>
+                <div className="pt-6">
+                  <p className="mb-4 text-[11px] uppercase tracking-[0.18em] text-[#c9ad73]">{String(index + 1).padStart(2, "0")} - {article.category}</p>
+                  <h3 className="font-newsreader text-4xl font-light leading-none">{article.title}</h3>
+                  <p className="mt-5 leading-relaxed text-white/58">{article.excerpt}</p>
+                </div>
+              </motion.a>
             ))}
           </div>
-        </motion.section>
+        </ScrollScene>
 
-        <motion.section className="bg-[#ebe5d8] text-[#12110f] px-5 md:px-8 py-20 md:py-28" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={STAGGER}>
-          <div className="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr] gap-12">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-black/45 text-[11px] uppercase tracking-[0.22em] mb-5">FAQ's</p>
-              <h2 className="font-newsreader font-light text-5xl md:text-7xl leading-none">Common questions before we begin.</h2>
-            </motion.div>
+        <ScrollScene>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.78fr_1.22fr]">
+            <SectionTitle eyebrow="FAQ" title="Common questions before we begin." />
             <div className="divide-y divide-black/15 border-y border-black/15">
               {faqs.map((item, index) => (
-                <motion.div key={item.question} variants={REVEAL} transition={{ duration: 0.65, ease: EASE }} className="py-1">
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq((current) => (current === index ? -1 : index))}
-                    className="group flex w-full items-center justify-between gap-8 py-6 text-left"
-                    aria-expanded={openFaq === index}
-                  >
-                    <span className="text-xl md:text-2xl font-light group-hover:text-black/60 transition-colors">{item.question}</span>
-                    <motion.span
-                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/20 text-black/45"
-                      animate={{ rotate: openFaq === index ? 45 : 0 }}
-                      transition={{ duration: 0.28, ease: EASE }}
-                    >
-                      +
-                    </motion.span>
+                <motion.div key={item.question} variants={reveal} transition={{ duration: 0.65, ease: EASE }} className="py-1">
+                  <button type="button" onClick={() => setOpenFaq((current) => (current === index ? -1 : index))} className="flex w-full items-center justify-between gap-8 py-6 text-left" aria-expanded={openFaq === index}>
+                    <span className="text-xl font-light md:text-2xl">{item.question}</span>
+                    <motion.span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/20 text-black/45" animate={{ rotate: openFaq === index ? 45 : 0 }} transition={{ duration: 0.28, ease: EASE }}>+</motion.span>
                   </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: openFaq === index ? "auto" : 0, opacity: openFaq === index ? 1 : 0 }}
-                    transition={{ duration: 0.38, ease: EASE }}
-                    className="overflow-hidden"
-                  >
-                    <p className="max-w-3xl pb-7 text-base md:text-lg leading-relaxed text-black/58">{item.answer}</p>
+                  <motion.div initial={false} animate={{ height: openFaq === index ? "auto" : 0, opacity: openFaq === index ? 1 : 0 }} transition={{ duration: 0.38, ease: EASE }} className="overflow-hidden">
+                    <p className="max-w-3xl pb-7 text-base leading-relaxed text-black/58 md:text-lg">{item.answer}</p>
                   </motion.div>
                 </motion.div>
               ))}
             </div>
           </div>
-        </motion.section>
+        </ScrollScene>
 
-        <motion.section className="bg-[#12110f] text-white px-5 md:px-8 py-20 md:py-28" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={STAGGER}>
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.8fr] gap-12 items-center">
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">Begin</p>
-              <h2 className="font-newsreader font-light leading-[1]" style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}>Let us shape the next room you remember.</h2>
-            </motion.div>
-            <motion.div variants={REVEAL} transition={{ duration: 0.75, ease: EASE }}>
-              <p className="text-white/65 text-lg leading-relaxed mb-8">
-                Bring us the site, the ambition, or the feeling you cannot quite name yet. We will translate it into a complete spatial direction.
-              </p>
-              <motion.a href="/contact" className="inline-flex rounded-full bg-[#e9e1d1] text-[#12110f] px-7 py-4 no-underline text-sm uppercase tracking-[0.16em]" whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }}>
-                Start a project
-              </motion.a>
+        <ScrollScene dark>
+          <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-[1fr_0.8fr]">
+            <SectionTitle eyebrow="Begin" title="Let us shape the next room you remember." light />
+            <motion.div variants={reveal} transition={{ duration: 0.75, ease: EASE }} className="border border-white/12 bg-white/[0.06] p-6 backdrop-blur-md md:p-8">
+              <p className="mb-8 text-lg leading-relaxed text-white/65">Bring us the site, the ambition, or the feeling you cannot quite name yet. We will translate it into a complete spatial direction.</p>
+              <div className="flex flex-wrap gap-3">
+                <a href="/contact" className="rounded-full bg-[#e9e1d1] px-7 py-4 text-sm uppercase tracking-[0.16em] text-[#12110f] no-underline">Start a project</a>
+                <a href={`mailto:${studio.email}`} className="rounded-full border border-white/16 px-7 py-4 text-sm uppercase tracking-[0.16em] text-white no-underline">Email studio</a>
+              </div>
             </motion.div>
           </div>
-        </motion.section>
+        </ScrollScene>
       </main>
-
       <Footer />
     </div>
   );

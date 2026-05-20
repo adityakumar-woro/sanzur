@@ -92,12 +92,10 @@ const ParallaxImage = ({
         src={src}
         alt=""
         className="w-full h-full object-cover"
-        whileHover={{ scale: 1.08 }}
         transition={{ duration: 0.6 }}
       />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/10 hover:bg-black/0 transition-colors duration-500" />
+      <div className="absolute inset-0 bg-black/10" />
     </motion.div>
   );
 };
@@ -137,7 +135,6 @@ const MobileGallery = () => {
               src={img.src}
               alt=""
               className="w-full h-full object-cover"
-              whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.5 }}
             />
           </div>

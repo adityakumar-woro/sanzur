@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { articles } from "@/data/studio";
 
 const BODY = [
@@ -19,14 +18,13 @@ export const NewsArticlePage = () => {
     return (
       <div className="min-h-screen bg-[#12110f] text-white flex flex-col items-center justify-center gap-6 font-dm_sans">
         <p className="text-2xl font-light">Article not found.</p>
-        <a href="/blogs" className="text-white/60 hover:text-white no-underline">Back to Blogs</a>
+        <a href="/blogs" className="text-white/60 no-underline">Back to Blogs</a>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="relative min-h-[72vh] px-5 md:px-8 pt-24 pb-10 flex items-end overflow-hidden">
@@ -54,16 +52,16 @@ export const NewsArticlePage = () => {
         <section className="px-5 md:px-8 py-20 md:py-28">
           <div className="flex items-end justify-between gap-8 mb-10">
             <h2 className="font-newsreader font-light text-5xl md:text-7xl">More Notes</h2>
-            <a href="/blogs" className="text-white/55 hover:text-white no-underline text-sm uppercase tracking-[0.16em]">All blogs</a>
+            <a href="/blogs" className="text-white/55 no-underline text-sm uppercase tracking-[0.16em]">All blogs</a>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {related.map((item) => (
-              <a key={item.id} href={`/blogs/${item.id}`} className="group no-underline text-white">
+              <a key={item.id} href={`/blogs/${item.id}`} className="no-underline text-white">
                 <div className="aspect-[4/3] overflow-hidden bg-[#2a261f] mb-5">
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                 </div>
                 <p className="text-white/38 text-[11px] uppercase tracking-[0.18em] mb-3">{item.category}</p>
-                <h3 className="font-newsreader font-light text-3xl leading-none group-hover:text-[#c9ad73] transition-colors">{item.title}</h3>
+                <h3 className="font-newsreader font-light text-3xl leading-none">{item.title}</h3>
               </a>
             ))}
           </div>

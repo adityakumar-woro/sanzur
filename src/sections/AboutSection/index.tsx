@@ -30,12 +30,11 @@ export const AboutSection = () => {
 
           <motion.a
             href="/about"
-            className="hidden md:inline-flex items-center gap-2 text-sm font-light font-dm_sans text-black/50 hover:text-black no-underline transition-colors duration-200"
-            whileHover={{ x: 4 }}
+            className="hidden md:inline-flex items-center gap-2 text-sm font-light font-dm_sans text-black/50 no-underline"
           >
             <span>→</span>
 
-            <span className="border-b border-black/20 hover:border-black transition-colors duration-200">
+            <span className="border-b border-black/20">
               Learn More
             </span>
           </motion.a>
@@ -68,7 +67,6 @@ export const AboutSection = () => {
           >
             <motion.div
               className="w-full overflow-hidden"
-              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
               <motion.img
@@ -156,8 +154,7 @@ const AnimatedLink = ({
 }) => (
   <motion.a
     href={href}
-    className="inline-flex items-center gap-2 group cursor-pointer w-fit no-underline"
-    whileHover={{ x: 5 }}
+    className="inline-flex items-center gap-2 cursor-pointer w-fit no-underline"
     transition={{ duration: 0.2 }}
   >
     <motion.span
@@ -173,7 +170,7 @@ const AnimatedLink = ({
       →
     </motion.span>
 
-    <span className="font-dm_sans font-light text-sm md:text-base text-black border-b border-black/30 group-hover:border-black transition-colors duration-200">
+    <span className="font-dm_sans font-light text-sm md:text-base text-black border-b border-black/30">
       {label}
     </span>
   </motion.a>

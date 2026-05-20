@@ -167,7 +167,6 @@ export const HeroSection = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7, delay: 1.05 }}
-          whileHover={{ x: 6 }}
         >
           <motion.span
             className="font-dm_sans font-light text-sm"
@@ -182,7 +181,7 @@ export const HeroSection = () => {
             →
           </motion.span>
 
-          <span className="font-dm_sans font-light text-sm border-b border-white/30 group-hover:border-white transition-colors duration-300">
+          <span className="font-dm_sans font-light text-sm border-b border-white/30">
             Explore Our Vision
           </span>
         </motion.a>

@@ -1,8 +1,7 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SplitText } from "@/components/SplitText";
-import { useState } from "react";
 
 const SERVICES = [
   { num: "01", label: "Interior Design" },
@@ -22,8 +21,6 @@ export const ServicesSection = () => {
   const { ref: headingRef } = useInView({ threshold: 0.1 });
   const { ref: listRef, inView: listInView } = useInView({ threshold: 0.1 });
   const descRef = useScrollReveal<HTMLParagraphElement>();
-
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section className="relative bg-orange-50 w-full border-b border-black/30 pt-16 pb-20 md:pt-20 md:pb-24 px-5 md:px-[30px] overflow-hidden">
@@ -55,84 +52,45 @@ export const ServicesSection = () => {
           {SERVICES.map((svc, i) => (
             <motion.div
               key={svc.num}
-              className="group flex items-baseline gap-4 py-5 md:py-6 border-b border-black/10 cursor-pointer relative"
+              className="flex items-baseline gap-4 py-5 md:py-6 border-b border-black/10 relative"
               initial={{ opacity: 0, x: -20 }}
               animate={listInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: i * 0.08 }}
-              onHoverStart={() => setHoveredIndex(i)}
-              onHoverEnd={() => setHoveredIndex(null)}
             >
-              <span className="text-xs italic font-light font-newsreader text-black/40 min-w-[32px] transition-all group-hover:text-black/70">
+              <span className="text-xs italic font-light font-newsreader text-black/40 min-w-[32px]">
                 {svc.num}
               </span>
 
-              <h4 className="text-[22px] md:text-[26px] font-light font-dm_sans text-black leading-tight group-hover:text-orange-800 transition-colors">
+              <h4 className="text-[22px] md:text-[26px] font-light font-dm_sans text-black leading-tight">
                 {svc.label}
               </h4>
 
-              <span className="ml-auto text-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 text-black/30">
+              <span className="ml-auto text-2xl text-black/30">
                 →
               </span>
-
-              <motion.div
-                className="absolute bottom-0 left-0 h-px bg-black origin-left"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: hoveredIndex === i ? 1 : 0 }}
-                transition={{ duration: 0.4 }}
-              />
             </motion.div>
           ))}
         </div>
 
         {/* Image Preview Area - FIXED */}
         <div className="lg:w-7/12 relative min-h-[460px] md:min-h-[520px] lg:min-h-[560px] rounded-3xl overflow-hidden bg-stone-100 shadow-xl">
-          <AnimatePresence mode="wait">
-            {hoveredIndex !== null ? (
-              <motion.img
-                key={hoveredIndex}
-                src={SERVICE_IMAGES[hoveredIndex]}
-                alt={SERVICES[hoveredIndex].label}
-                className="absolute inset-0 w-full h-full object-cover"
-                initial={{ opacity: 0, scale: 1.08 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{ duration: 0.75, ease: [0.33, 1, 0.68, 1] }}
-              />
-            ) : (
-              /* Default Collage - Now properly visible */
-              <div className="absolute inset-0 grid grid-cols-2 gap-3 p-4">
-                {SERVICE_IMAGES.map((src, i) => (
-                  <motion.div
-                    key={i}
-                    className="overflow-hidden rounded-2xl"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    <img
-                      src={src}
-                      alt=""
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </AnimatePresence>
-
-          {/* Hover Label */}
-          <AnimatePresence>
-            {hoveredIndex !== null && (
+          <div className="absolute inset-0 grid grid-cols-2 gap-3 p-4">
+            {SERVICE_IMAGES.map((src, i) => (
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                key={i}
+                className="overflow-hidden rounded-2xl"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                className="absolute bottom-8 left-8 bg-black/80 text-white px-7 py-3.5 rounded-full text-sm font-light backdrop-blur-md"
+                transition={{ delay: i * 0.1 }}
               >
-                {SERVICES[hoveredIndex].label}
+                <img
+                  src={src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
               </motion.div>
-            )}
-          </AnimatePresence>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import portfolios from "@/data/portfolioExtracts.json";
 
 type Portfolio = {
@@ -10,7 +9,6 @@ type Portfolio = {
   pageCount: number;
   embeddedImageCount: number;
   pages: { number: number; image: string; text: string }[];
-  extractedImages: string[];
 };
 
 const portfolioItems = portfolios as Portfolio[];
@@ -24,32 +22,28 @@ const descriptions: Record<string, string> = {
 
 export const PortfolioPage = () => {
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="min-h-[66vh] px-5 md:px-8 pt-24 pb-10 flex flex-col justify-end">
-          <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">Extracted Portfolios</p>
+          <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">Portfolio Collection</p>
           <h1 className="font-newsreader font-light leading-[0.92]" style={{ fontSize: "clamp(4.5rem, 14vw, 14rem)" }}>
             Portfolio Library
           </h1>
-          <p className="text-white/68 text-lg md:text-xl leading-relaxed max-w-3xl mt-8">
-            Four supplied portfolios have been converted into browsable website pages with extracted text, rendered spreads, original source files, and embedded image galleries.
-          </p>
         </header>
 
         <section className="px-5 md:px-8 pb-20 md:pb-28">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {portfolioItems.map((item, index) => (
-              <a key={item.slug} href={`/portfolio/${item.slug}`} className="group no-underline text-white border border-white/12 bg-[#181613]">
+              <a key={item.slug} href={`/portfolio/${item.slug}`} className="no-underline text-white border border-white/12 bg-[#181613]">
                 <div className="aspect-[16/10] overflow-hidden bg-[#2a261f]">
-                  <img src={item.pages[0]?.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                  <img src={item.pages[0]?.image} alt={item.title} className="h-full w-full object-cover" loading="lazy" />
                 </div>
                 <div className="p-6 md:p-8">
                   <p className="text-[#c9ad73] text-[11px] uppercase tracking-[0.18em] mb-4">
                     {String(index + 1).padStart(2, "0")} · {item.pageCount} pages · {item.embeddedImageCount} images
                   </p>
-                  <h2 className="font-newsreader font-light text-4xl md:text-6xl leading-none mb-5 group-hover:text-[#c9ad73] transition-colors">
+                  <h2 className="font-newsreader font-light text-4xl md:text-6xl leading-none mb-5">
                     {item.title}
                   </h2>
                   <p className="text-white/58 leading-relaxed">{descriptions[item.slug]}</p>
@@ -62,7 +56,7 @@ export const PortfolioPage = () => {
         <section className="bg-[#ebe5d8] text-[#12110f] px-5 md:px-8 py-20 md:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12">
             <div>
-              <p className="text-black/45 text-[11px] uppercase tracking-[0.22em] mb-5">Extracted Content</p>
+              <p className="text-black/45 text-[11px] uppercase tracking-[0.22em] mb-5">Studio Content</p>
               <h2 className="font-newsreader font-light text-5xl md:text-7xl leading-none">Profile, skills, projects, drawings, and visual direction.</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

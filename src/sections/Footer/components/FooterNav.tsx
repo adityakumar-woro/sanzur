@@ -39,12 +39,11 @@ export const FooterNav = () => {
           <motion.a
             key={link.label}
             href={link.href}
-            className="text-white/40 hover:text-white font-light font-dm_sans leading-[1.2] no-underline w-fit transition-colors duration-200 group relative overflow-hidden"
+            className="text-white/40 font-light font-dm_sans leading-[1.2] no-underline w-fit relative overflow-hidden"
             style={{ fontSize: "clamp(1.8rem, 5vw, 4rem)" }}
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.65, ease: EASE, delay: 0.05 + i * 0.08 }}
-            whileHover={{ x: 8 }}
           >
             {link.label}
           </motion.a>

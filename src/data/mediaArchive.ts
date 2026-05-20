@@ -107,5 +107,3 @@ export const mediaArchive = archiveFiles.map((file, index) => ({
 }));
 
 export const archiveImages = mediaArchive.filter((item) => item.type === "image");
-export const archiveVideos = mediaArchive.filter((item) => item.type === "video");
-

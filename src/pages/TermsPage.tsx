@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 
 const sections = [
   {
@@ -28,8 +27,7 @@ const sections = [
 
 export const TermsPage = () => {
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="px-5 md:px-8 pt-24 pb-16 md:pb-24">

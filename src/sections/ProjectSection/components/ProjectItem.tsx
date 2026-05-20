@@ -12,7 +12,6 @@ export type ProjectItemProps = {
 
 export const ProjectItem = (props: ProjectItemProps) => {
   const ref = useRef<HTMLElement>(null);
-  const hoverImageRef = useRef<HTMLDivElement>(null);
 
   // Parallax for background image (full range)
   const { scrollYProgress: parallaxProgress } = useScroll({
@@ -32,21 +31,6 @@ export const ProjectItem = (props: ProjectItemProps) => {
   const contentOpacity = useTransform(enterProgress, [0, 0.55], [0, 1]);
   const contentY = useTransform(enterProgress, [0, 0.55], [72, 0]);
 
-  const onMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const xPct = (e.clientX - rect.left) / rect.width - 0.5;
-    const yPct = (e.clientY - rect.top) / rect.height - 0.5;
-    if (hoverImageRef.current) {
-      hoverImageRef.current.style.transform = `scale(1.06) translate(${xPct * 12}px, ${yPct * 8}px)`;
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (hoverImageRef.current) {
-      hoverImageRef.current.style.transform = "scale(1) translate(0, 0)";
-    }
-  };
-
   return (
     <section
       ref={ref}
@@ -55,8 +39,6 @@ export const ProjectItem = (props: ProjectItemProps) => {
       <a
         href={props.href}
         className="relative flex flex-col shrink-0 h-[70vh] min-h-[500px] md:h-[100vh] justify-start w-full z-[1] overflow-hidden px-5 md:px-[30px] py-10 md:py-[100px] gap-y-14 md:gap-y-[250px]"
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
       >
         {/* Scroll-driven content wrapper */}
         <motion.div
@@ -84,7 +66,6 @@ export const ProjectItem = (props: ProjectItemProps) => {
               </h5>
               <motion.div
                 className="inline-flex items-center gap-2 text-white/60 text-sm font-dm_sans font-light mt-4"
-                whileHover={{ x: 5 }}
               >
                 <span>→</span>
                 <span className="border-b border-white/30">View Project</span>
@@ -96,14 +77,12 @@ export const ProjectItem = (props: ProjectItemProps) => {
         {/* Dark overlay */}
         <div className="absolute bg-black h-full opacity-40 w-full z-[1] left-0 top-0 pointer-events-none" />
 
-        {/* Background image with parallax + hover drift */}
+        {/* Background image with parallax */}
         <div className="absolute inset-0 overflow-hidden z-0">
           <motion.div
-            ref={hoverImageRef}
             className="w-full h-full"
             style={{
               y: imgY,
-              transition: "transform 0.6s cubic-bezier(0.33,1,0.68,1)",
             }}
           >
             <img

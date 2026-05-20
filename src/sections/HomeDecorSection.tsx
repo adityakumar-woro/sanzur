@@ -63,7 +63,7 @@ export const HomeDecorSection = () => {
       >
         {/* Left: tall feature image */}
         <motion.div
-          className="md:col-span-6 relative overflow-hidden group"
+          className="md:col-span-6 relative overflow-hidden"
           style={{ aspectRatio: "3 / 4" }}
           initial={{ opacity: 0, x: -24 }}
           animate={gridInView ? { opacity: 1, x: 0 } : {}}
@@ -72,19 +72,18 @@ export const HomeDecorSection = () => {
           <img
             src={ITEMS[0].image}
             alt={ITEMS[0].label}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover"
           />
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-500" />
+          <div className="absolute inset-0 bg-black/10" />
           {/* Bottom label */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/60 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/60 to-transparent">
             <p className="text-white text-xs font-light font-dm_sans uppercase tracking-widest">
               {ITEMS[0].label}
             </p>
           </div>
           {/* Corner accent */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/0 group-hover:border-white/50 transition-all duration-300 flex items-center justify-center">
-            <span className="text-white/0 group-hover:text-white/80 text-xs transition-colors duration-300">+</span>
+          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/50 flex items-center justify-center">
+            <span className="text-white/80 text-xs">+</span>
           </div>
         </motion.div>
 
@@ -93,7 +92,7 @@ export const HomeDecorSection = () => {
           {ITEMS.slice(1).map((item, i) => (
             <motion.div
               key={i}
-              className="relative overflow-hidden group"
+              className="relative overflow-hidden"
               initial={{ opacity: 0, x: 24 }}
               animate={gridInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.85, delay: 0.12 + i * 0.12, ease: EASE }}
@@ -101,16 +100,16 @@ export const HomeDecorSection = () => {
               <img
                 src={item.image}
                 alt={item.label}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 bg-gradient-to-t from-black/60 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <div className="absolute inset-0 bg-black/10" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 bg-gradient-to-t from-black/60 to-transparent">
                 <p className="text-white text-xs font-light font-dm_sans uppercase tracking-widest">
                   {item.label}
                 </p>
               </div>
-              <div className="absolute top-3 right-3 w-7 h-7 rounded-full border border-white/0 group-hover:border-white/50 transition-all duration-300 flex items-center justify-center">
-                <span className="text-white/0 group-hover:text-white/80 text-xs transition-colors duration-300">+</span>
+              <div className="absolute top-3 right-3 w-7 h-7 rounded-full border border-white/50 flex items-center justify-center">
+                <span className="text-white/80 text-xs">+</span>
               </div>
             </motion.div>
           ))}
@@ -133,7 +132,7 @@ export const HomeDecorSection = () => {
         </div>
         <a
           href="/about"
-          className="text-white/40 hover:text-white text-xs font-light font-dm_sans uppercase tracking-widest no-underline transition-colors duration-200 hidden md:block"
+          className="text-white/40 text-xs font-light font-dm_sans uppercase tracking-widest no-underline hidden md:block"
         >
           Explore More →
         </a>

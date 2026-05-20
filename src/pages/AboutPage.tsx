@@ -1,6 +1,5 @@
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { images } from "@/data/studio";
 
 const VALUES = [
@@ -11,8 +10,7 @@ const VALUES = [
 
 export const AboutPage = () => {
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="relative min-h-[82vh] px-5 md:px-8 pt-24 pb-10 flex items-end overflow-hidden">

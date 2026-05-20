@@ -25,7 +25,7 @@ export const NewsHeader = () => {
         <a
           ref={refCta}
           href="/blogs"
-          className="reveal reveal-delay-2 text-base font-light font-dm_sans text-black hover:opacity-60 transition-opacity duration-200 no-underline"
+          className="reveal reveal-delay-2 text-base font-light font-dm_sans text-black no-underline"
         >
           View All →
         </a>

@@ -1,13 +1,11 @@
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { MediaArchive } from "@/components/MediaArchive";
 import { projects } from "@/data/studio";
 
 export const ProjectsPage = () => {
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="min-h-[68vh] px-5 md:px-8 pt-24 pb-10 flex flex-col justify-end">
@@ -23,7 +21,7 @@ export const ProjectsPage = () => {
             {projects.map((project, index) => (
               <a key={project.id} href={`/projects/${project.id}`} className="group no-underline text-white">
                 <div className="relative aspect-[4/3] overflow-hidden bg-[#2a261f]">
-                  <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <div className="absolute left-5 right-5 bottom-5 flex justify-between gap-6 items-end">
                     <div>
@@ -48,7 +46,7 @@ export const ProjectsPage = () => {
 
         <MediaArchive
           title="Complete Site Archive"
-          intro="Every photo and video from the uploaded project archive is included here, lazy-loaded for browsing across the full set."
+          intro="Browse the project photo archive in curated pages."
         />
       </main>
       <Footer />

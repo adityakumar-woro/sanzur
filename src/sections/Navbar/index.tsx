@@ -42,8 +42,6 @@ export const Navbar = () => {
           <motion.a
             href="/"
             className="flex items-center gap-[10px] no-underline z-[2]"
-            whileHover={{ opacity: 0.7 }}
-            transition={{ duration: 0.2 }}
           >
             <span className="text-white text-[15px] md:text-[18px] font-light font-dm_sans uppercase tracking-[0.18em] leading-none whitespace-nowrap">
               SANZUR
@@ -56,7 +54,7 @@ export const Navbar = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-white/72 hover:text-white text-[12px] font-dm_sans uppercase tracking-[0.16em] transition-colors no-underline"
+                className="text-white/72 text-[12px] font-dm_sans uppercase tracking-[0.16em] no-underline"
               >
                 {link.label}
               </a>
@@ -113,13 +111,12 @@ export const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-[10px] no-underline h-[56px] md:h-[76px] group touch-manipulation overflow-hidden"
+                  className="flex items-center gap-[10px] no-underline h-[56px] md:h-[76px] touch-manipulation overflow-hidden"
                   initial={{ y: 60, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.55, ease: EASE, delay: 0.15 + i * 0.07 }}
-                  whileHover={{ x: 10 }}
                 >
-                  <span className="text-white/50 text-[38px] md:text-[64px] font-light font-dm_sans leading-[1.2] whitespace-nowrap group-hover:text-white transition-colors duration-200">
+                  <span className="text-white/70 text-[38px] md:text-[64px] font-light font-dm_sans leading-[1.2] whitespace-nowrap">
                     {link.label}
                   </span>
                 </motion.a>
@@ -136,7 +133,7 @@ export const Navbar = () => {
                 <p className="text-white/90 font-light font-dm_sans text-sm md:text-base">Luxury interiors, architecture, and turnkey execution for homes, retail, and hospitality.</p>
               </div>
               <div className="flex flex-col gap-2 md:items-end">
-                <a href="mailto:studio@sanzur.com" className="text-white/70 hover:text-white font-dm_sans text-sm no-underline">studio@sanzur.com</a>
+                <a href="mailto:studio@sanzur.com" className="text-white/70 font-dm_sans text-sm no-underline">studio@sanzur.com</a>
                 <p className="text-white/40 font-dm_sans text-[12px]">All Rights Reserved ©2026 Sanzur</p>
               </div>
             </motion.div>

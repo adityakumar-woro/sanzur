@@ -23,20 +23,18 @@ export const NewsCard = ({
     <a
       ref={ref}
       href={href}
-      className={`reveal reveal-up ${delayClass} group flex flex-col gap-4 no-underline`}
+      className={`reveal reveal-up ${delayClass} flex flex-col gap-4 no-underline`}
     >
       {/* Image container */}
       <div className="relative overflow-hidden aspect-[4/3] bg-stone-200">
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500 z-[1]" />
+        <div className="absolute inset-0 bg-black/10 z-[1]" />
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-107"
+          className="w-full h-full object-cover"
           style={{ transformOrigin: "center center" }}
         />
-        {/* Category chip — slides up on hover */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 z-[2] translate-y-full group-hover:translate-y-0 transition-transform duration-400 ease-out bg-gradient-to-t from-black/60 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-3 z-[2] bg-gradient-to-t from-black/60 to-transparent">
           <span className="text-white text-[10px] font-light font-dm_sans uppercase tracking-widest">
             {category}
           </span>
@@ -53,12 +51,11 @@ export const NewsCard = ({
           <span className="text-black/40 text-xs font-light font-dm_sans">{date}</span>
         </div>
 
-        <h3 className="text-black text-base md:text-lg font-light font-dm_sans leading-[1.35] group-hover:opacity-60 transition-opacity duration-300">
+        <h3 className="text-black text-base md:text-lg font-light font-dm_sans leading-[1.35]">
           {title}
         </h3>
 
-        {/* Animated underline */}
-        <div className="h-px bg-black/10 w-0 group-hover:w-full transition-all duration-500 ease-out" />
+        <div className="h-px bg-black/10 w-full" />
       </div>
     </a>
   );

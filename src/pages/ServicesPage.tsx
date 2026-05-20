@@ -1,12 +1,10 @@
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { images, process, services } from "@/data/studio";
 
 export const ServicesPage = () => {
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="relative min-h-[74vh] px-5 md:px-8 pt-24 pb-10 flex items-end overflow-hidden">

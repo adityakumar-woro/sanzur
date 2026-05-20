@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { PageWrapper } from "@/components/PageWrapper";
 import { useInView } from "@/hooks/useInView";
 import awadhi1 from "@/assets/awadhi1.jpeg";
@@ -95,7 +94,7 @@ export const ProjectDetailPage = () => {
     return (
       <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center gap-6 font-dm_sans">
         <p className="text-2xl font-light text-black">Project not found.</p>
-        <a href="/projects" className="text-black/60 hover:text-black text-sm no-underline">
+        <a href="/projects" className="text-black/60 text-sm no-underline">
           ← Back to Projects
         </a>
       </div>
@@ -108,8 +107,7 @@ export const ProjectDetailPage = () => {
   );
 
   return (
-    <div className="text-black text-xs font-normal bg-orange-50 font-sans_serif cursor-none-desktop">
-      <CustomCursor />
+    <div className="text-black text-xs font-normal bg-orange-50 font-sans_serif">
       <PageWrapper>
         <div className="flex flex-col min-h-screen bg-orange-50">
           <Navbar />
@@ -271,7 +269,7 @@ export const ProjectDetailPage = () => {
               </motion.h2>
               <motion.a
                 href="/projects"
-                className="text-sm font-light font-dm_sans text-black/50 hover:text-black transition-colors duration-200 no-underline"
+                className="text-sm font-light font-dm_sans text-black/50 no-underline"
                 initial={{ opacity: 0 }}
                 animate={nextInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
@@ -294,14 +292,14 @@ export const ProjectDetailPage = () => {
                     <img
                       src={np.heroImage}
                       alt={np.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
                     <p className="text-xs font-light font-dm_sans uppercase tracking-widest text-black/40">
                       {np.type}
                     </p>
-                    <h3 className="text-lg md:text-xl font-light font-dm_sans text-black group-hover:opacity-60 transition-opacity duration-200">
+                    <h3 className="text-lg md:text-xl font-light font-dm_sans text-black">
                       {np.name}
                     </h3>
                     <p className="text-sm font-light font-dm_sans text-black/50">{np.location}</p>

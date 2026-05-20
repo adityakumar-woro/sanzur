@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { CustomCursor } from "@/components/CustomCursor";
 import { images, studio } from "@/data/studio";
 
 export const ContactPage = () => {
@@ -13,8 +12,7 @@ export const ContactPage = () => {
   };
 
   return (
-    <div className="bg-[#12110f] text-white font-dm_sans cursor-none-desktop">
-      <CustomCursor />
+    <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
         <header className="relative min-h-[70vh] px-5 md:px-8 pt-24 pb-10 flex items-end overflow-hidden">
@@ -74,7 +72,7 @@ export const ContactPage = () => {
                   className="w-full bg-transparent outline-none text-xl md:text-2xl font-newsreader placeholder:text-black/30 resize-none"
                 />
               </label>
-              <button type="submit" className="justify-self-start bg-[#12110f] text-white px-8 py-4 text-sm uppercase tracking-[0.16em] hover:bg-[#2a2621]">
+              <button type="submit" className="justify-self-start bg-[#12110f] text-white px-8 py-4 text-sm uppercase tracking-[0.16em]">
                 Send enquiry
               </button>
             </form>

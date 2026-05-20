@@ -35,8 +35,7 @@ const MobileContact = () => {
         </p>
         <motion.a
           href="/contact"
-          className="inline-flex items-center gap-3 border border-black text-black text-base font-light font-dm_sans px-7 py-4 hover:bg-black hover:text-white transition-colors duration-300 w-fit"
-          whileHover={{ x: 4 }}
+          className="inline-flex items-center gap-3 border border-black text-black text-base font-light font-dm_sans px-7 py-4 w-fit"
           whileTap={{ scale: 0.97 }}
         >
           <img src="https://c.animaapp.com/mnitwnjzSfY2Kl/assets/icon-6.svg" alt="" className="w-5 h-5" />
@@ -107,14 +106,13 @@ const DesktopContact = () => {
         >
           <motion.a
             href="/contact"
-            className="inline-flex items-center gap-3 border border-black text-black text-lg md:text-[21px] font-light font-dm_sans px-8 py-5 hover:bg-black hover:text-white transition-colors duration-300 group"
-            whileHover={{ scale: 1.02 }}
+            className="inline-flex items-center gap-3 border border-black text-black text-lg md:text-[21px] font-light font-dm_sans px-8 py-5"
             whileTap={{ scale: 0.98 }}
           >
             <img
               src="https://c.animaapp.com/mnitwnjzSfY2Kl/assets/icon-6.svg"
               alt=""
-              className="w-5 h-5 group-hover:invert transition-[filter] duration-300"
+              className="w-5 h-5"
             />
             Get In Touch
           </motion.a>
