@@ -10,7 +10,7 @@ export const NewsPage = () => {
     <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
-        <header className="min-h-[62vh] px-5 md:px-8 pt-24 pb-10 flex flex-col justify-end">
+        <header className="min-h-[62vh] px-5 md:px-8 pt-16 pb-10 flex flex-col justify-end">
           <p className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">Blogs</p>
           <h1 className="font-newsreader font-light leading-[0.92]" style={{ fontSize: "clamp(4.5rem, 14vw, 14rem)" }}>Journal</h1>
           <p className="text-white/68 text-lg md:text-xl leading-relaxed max-w-2xl mt-8">

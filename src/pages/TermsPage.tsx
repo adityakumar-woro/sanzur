@@ -30,7 +30,7 @@ export const TermsPage = () => {
     <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
-        <header className="px-5 md:px-8 pt-24 pb-16 md:pb-24">
+        <header className="px-5 md:px-8 pt-16 pb-16 md:pb-24">
           <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="text-white/45 text-[11px] uppercase tracking-[0.22em] mb-5">
             Legal
           </motion.p>

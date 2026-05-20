@@ -15,7 +15,7 @@ export const ContactPage = () => {
     <div className="bg-[#12110f] text-white font-dm_sans">
       <Navbar />
       <main>
-        <header className="relative min-h-[70vh] px-5 md:px-8 pt-24 pb-10 flex items-end overflow-hidden">
+        <header className="relative min-h-[70vh] px-5 md:px-8 pt-16 pb-10 flex items-end overflow-hidden">
           <img src={images.editorialFour} alt="" className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#12110f] via-black/45 to-black/30" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-10 items-end w-full">

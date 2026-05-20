@@ -59,9 +59,9 @@ module.exports = {
         "sans_serif": ["ui-sans-serif", "system-ui", "sans-serif"],
         "times": ["Times New Roman", "Times", "serif"],
         "arial": ["Arial", "Helvetica", "sans-serif"],
-        "dm_sans": ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
-        "newsreader": ["Newsreader", "ui-serif", "Georgia", "serif"],
-        "inter": ["Inter", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
+        "dm_sans": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
+        "newsreader": ["Cormorant Garamond", "ui-serif", "Georgia", "serif"],
+        "inter": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
       },
       keyframes: {
         "accordion-down": {

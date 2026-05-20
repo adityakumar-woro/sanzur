@@ -13,6 +13,7 @@ import { PortfolioPage } from "./pages/PortfolioPage";
 import { PortfolioDetailPage } from "./pages/PortfolioDetailPage";
 import { TermsPage } from "./pages/TermsPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { ArchivePage } from "./pages/ArchivePage";
 import "./index.css";
 import "../taillwind.css";
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/projects",
     element: <ProjectsPage />,
+  },
+  {
+    path: "/archive",
+    element: <ArchivePage />,
   },
   {
     path: "/projects/:id",
