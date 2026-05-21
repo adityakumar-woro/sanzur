@@ -75,7 +75,7 @@ const ScrollScene = ({ children, dark = false }: { children: React.ReactNode; da
   return (
     <motion.section
       ref={ref}
-      className={`relative overflow-hidden px-5 py-20 md:px-8 md:py-28 ${dark ? "bg-[#11100e] text-white" : "bg-[#e8dfd0] text-[#12110f]"}`}
+      className={`relative isolate overflow-hidden px-5 py-20 md:px-8 md:py-28 ${dark ? "bg-[#11100e] text-white" : "bg-[#e8dfd0] text-[#12110f]"}`}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.18 }}
@@ -83,14 +83,14 @@ const ScrollScene = ({ children, dark = false }: { children: React.ReactNode; da
     >
       <motion.div
         style={{ y }}
-        className={`absolute -right-28 top-16 h-[26rem] w-[26rem] rounded-full blur-3xl ${dark ? "bg-[#c9ad73]/14" : "bg-[#c9ad73]/24"}`}
+        className={`pointer-events-none absolute -right-28 top-16 z-0 h-[26rem] w-[26rem] rounded-full blur-3xl ${dark ? "bg-[#c9ad73]/14" : "bg-[#c9ad73]/24"}`}
       />
       <motion.div
-        className={`absolute -left-20 bottom-[-10rem] h-[30rem] w-[30rem] rounded-full blur-3xl ${dark ? "bg-[#3b4b3f]/18" : "bg-[#59664f]/14"}`}
+        className={`pointer-events-none absolute -left-20 bottom-[-10rem] z-0 h-[30rem] w-[30rem] rounded-full blur-3xl ${dark ? "bg-[#3b4b3f]/18" : "bg-[#59664f]/14"}`}
         animate={{ x: [0, 34, 0], scale: [1, 1.08, 1] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div className="relative z-10">{children}</div>
+      {children}
     </motion.section>
   );
 };
