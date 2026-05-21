@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
-import awadhi1 from "@/assets/awadhi1.jpeg";
-import { ahujaVillaImages, marLoungeImages, villa17Images } from "@/data/studio";
+import { ahujaVillaImages, awadhiJewelsImages, marLoungeImages, padelImages, villa17Images } from "@/data/studio";
 
 const PROJECTS = [
   {
@@ -20,13 +19,13 @@ const PROJECTS = [
     id: "awadhi-jewels",
     name: "Awadhi Jewels",
     type: "Commercial",
-    image: awadhi1,
+    image: awadhiJewelsImages[0],
   },
   {
     id: "padel",
     name: "Padel",
     type: "Recreational",
-    image: "https://framerusercontent.com/images/TIej5lk8D06XR5B65DtRqzzLU.jpeg",
+    image: padelImages[0],
   },
   {
     id: "villa-17",

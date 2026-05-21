@@ -12,7 +12,7 @@ const SERVICES = [
 
 const SERVICE_IMAGES = [
   "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/ReJwRbXJwTFxetSzciMpxrBfK8A.jpeg",
-  "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/pqX1CuSJYsP7oDqUxXpKvHgP4VY.jpeg",
+  "/projects/padel/padel-collage.png",
   "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/5o0R1uytbLqum3oZFhynbfelw5w.jpeg",
   "https://c.animaapp.com/mnitwnjzSfY2Kl/assets/AtdiKWyuN2qHdjex8ctxe8TjV8.jpeg",
 ];
