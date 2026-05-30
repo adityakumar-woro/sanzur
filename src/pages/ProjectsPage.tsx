@@ -27,10 +27,6 @@ export const ProjectsPage = () => {
         </header>
 
         <section className="px-5 pb-20 pt-6 md:px-8 md:pb-28">
-          <div className="mb-8 flex items-center justify-between border-y border-white/10 py-4 text-[10px] uppercase tracking-[0.22em] text-white/45">
-            <span>{projects.length} commissions</span>
-            <a href="/archive" className="text-[#c9ad73] no-underline">Open archive</a>
-          </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {visibleProjects.map((project, index) => (

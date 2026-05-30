@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 
 const NAV_LINKS = [
-  { label: "About", href: "/about" },
+  { label: "About Us", href: "/about" },
   { label: "Projects", href: "/projects" },
   { label: "Blogs", href: "/blogs" },
   { label: "Contact", href: "/contact" },

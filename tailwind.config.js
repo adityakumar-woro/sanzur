@@ -57,11 +57,12 @@ module.exports = {
           '"Noto Color Emoji"',
         ],
         "sans_serif": ["ui-sans-serif", "system-ui", "sans-serif"],
-        "times": ["Times New Roman", "Times", "serif"],
+        "times": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
         "arial": ["Arial", "Helvetica", "sans-serif"],
         "dm_sans": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
-        "newsreader": ["Cormorant Garamond", "ui-serif", "Georgia", "serif"],
-        "inter": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
+        "newsreader": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
+        "inter": ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
+        "inter_display": ["Inter", "Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
       },
       keyframes: {
         "accordion-down": {

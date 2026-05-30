@@ -46,7 +46,7 @@ const ALL_PROJECTS = [
   },
   {
     id: "padel",
-    name: "Padel",
+    name: "Padel Court",
     subtitle: "Recreational space designed for sport and community",
     type: "Recreational",
     location: "India",

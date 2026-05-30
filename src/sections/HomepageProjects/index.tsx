@@ -23,7 +23,7 @@ const PROJECTS = [
   },
   {
     id: "padel",
-    name: "Padel",
+    name: "Padel Court",
     type: "Recreational",
     image: padelImages[0],
   },

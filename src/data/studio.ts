@@ -94,7 +94,7 @@ export const projects = [
   },
   {
     id: "padel",
-    name: "Padel Club",
+    name: "Padel Court",
     year: "2025",
     type: "Recreational",
     location: "India",
@@ -116,30 +116,41 @@ export const services = [
   {
     name: "Interior Architecture",
     description: "Spatial planning, interior shells, circulation, lighting strategy, and material direction for refined living and commercial environments.",
-    image: imageTwo,
+    image: "/services/interior-architecture.png",
   },
   {
     name: "Luxury Residential Design",
     description: "Complete home concepts from room programming and mood direction to bespoke details, furniture, and styling.",
-    image: villa3,
+    image: "/services/luxury-residential-design.png",
   },
   {
     name: "Retail & Hospitality",
     description: "Brand-led interiors for boutiques, lounges, restaurants, and experience-driven destinations.",
-    image: awadhi2,
+    image: "/services/retail-hospitality.png",
+  },
+  {
+    name: "PMC",
+    description: "Project management consultancy that keeps timelines, coordination, quality checks, vendor communication, and site decisions moving with clarity.",
+    image: "/services/pmc.png",
+  },
+  {
+    name: "Vendor and Material Management",
+    description: "Vendor shortlisting, material selection, purchase coordination, sample tracking, and procurement support so design intent carries cleanly into execution.",
+    image: "/services/vendor-material-management.png",
   },
   {
     name: "Turnkey Execution",
-    description: "Vendor coordination, site reviews, procurement direction, and handover support for a smoother build journey.",
-    image: villa4,
+    description: "Site reviews, contractor coordination, procurement direction, final accessories staging, and handover support for a smoother build journey.",
+    image: "/services/turnkey-execution.png",
   },
 ];
 
 export const process = [
   "Briefing and spatial audit",
   "Concept direction and material language",
+  "UAE Authority Approvals",
   "Detailed design, drawings, and procurement",
-  "Site coordination and final styling",
+  "Site coordination and final accessories staging",
 ];
 
 export const articles = [

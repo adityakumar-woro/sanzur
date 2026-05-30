@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Navbar } from "@/sections/Navbar";
 import { Footer } from "@/sections/Footer";
-import { images, projects, services, studio } from "@/data/studio";
+import { images, services, studio } from "@/data/studio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -17,10 +17,34 @@ const stagger = {
 };
 
 const VALUES = [
-  ["01", "Restraint", "Luxury is edited until every gesture has purpose, weight, and silence."],
-  ["02", "Material Memory", "Stone, timber, plaster, metal, and textile are selected for how they age, absorb light, and hold touch."],
-  ["03", "Human Rhythm", "Plans are shaped around rituals, privacy, arrival, hosting, pause, and retreat."],
-  ["04", "Execution Calm", "Concept, documentation, procurement, site coordination, and styling stay aligned from brief to handover."],
+  {
+    number: "01",
+    title: "Restraint",
+    text: "Luxury is edited until every gesture has purpose, weight, and silence.",
+    image: "/about-values/restraint.png",
+    alt: "Minimal stone plinth with a sculptural vessel in warm side light",
+  },
+  {
+    number: "02",
+    title: "Material Memory",
+    text: "Stone, timber, plaster, metal, and textile are selected with vendor management, purchasing clarity, and attention to how each material ages, absorbs light, and holds touch.",
+    image: "/about-values/material-memory.png",
+    alt: "Interior material palette with stone, timber, brass, plaster, and woven textile samples",
+  },
+  {
+    number: "03",
+    title: "Human Rhythm",
+    text: "Plans are shaped around rituals, privacy, arrival, hosting, pause, and retreat.",
+    image: "/about-values/human-rhythm.png",
+    alt: "Calm residential interior threshold with curtains, lounge chair, book, and morning light",
+  },
+  {
+    number: "04",
+    title: "Execution Calm",
+    text: "Our process moves from briefing and spatial audit to concept direction, UAE authority approvals, site coordination, and final accessories staging.",
+    image: "/about-values/execution-calm.png",
+    alt: "Orderly designer table with architectural drawings, material samples, scale, and brass pen",
+  },
 ];
 
 const STUDIO_NOTES = [
@@ -129,7 +153,7 @@ export const AboutPage = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(201,173,115,0.22),transparent_34%),linear-gradient(90deg,rgba(18,17,15,0.94),rgba(18,17,15,0.52)_58%,rgba(18,17,15,0.2))]" />
           <motion.div className="relative z-10 max-w-6xl" initial="hidden" animate="visible" variants={stagger}>
             <motion.p variants={reveal} transition={{ duration: 0.8, ease: EASE }} className="mb-5 text-[10px] uppercase tracking-[0.28em] text-[#c9ad73]">
-              About Sanzur
+              About Us
             </motion.p>
             <motion.h1 variants={reveal} transition={{ duration: 0.95, ease: EASE }} className="font-newsreader font-light leading-[0.96]" style={{ fontSize: "clamp(4rem, 10.5vw, 11rem)" }}>
               A studio for quiet architectural luxury.
@@ -177,10 +201,10 @@ export const AboutPage = () => {
             <SectionTitle eyebrow="Design Values" title="Calm language. Exacting craft." copy="A simpler, more architectural system for the principles behind each commission." light />
           </div>
           <div className="relative grid grid-cols-1 gap-4 md:grid-cols-2">
-            {VALUES.map(([number, title, text], index) => (
+            {VALUES.map(({ number, title, text, image, alt }) => (
               <motion.article key={title} variants={reveal} whileHover={{ y: -6 }} transition={{ duration: 0.68, ease: EASE }} className="group grid min-h-[260px] grid-cols-1 overflow-hidden border border-white/12 bg-white/[0.045] md:grid-cols-[0.42fr_0.58fr]">
                 <div className="relative min-h-[220px] overflow-hidden">
-                  <img src={projects[index % projects.length].image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105" loading="lazy" />
+                  <img src={image} alt={alt} className="absolute inset-0 h-full w-full object-cover opacity-75 transition duration-700 group-hover:scale-105" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <span className="absolute bottom-4 left-4 font-newsreader text-5xl font-light text-[#c9ad73]">{number}</span>
                 </div>

@@ -10,7 +10,7 @@ const FOOTER_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Blogs", href: "/blogs" },
-  { label: "About", href: "/about" },
+  { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
