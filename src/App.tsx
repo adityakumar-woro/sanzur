@@ -300,13 +300,13 @@ export const App = () => {
               </motion.div>
             </div>
 
-            <motion.div variants={reveal} transition={{ duration: 0.95, ease: EASE }} className="relative z-[4] flex w-full flex-col items-center justify-center pt-24 md:pt-[90px]">
-              <h1 className="text-center font-inter_display text-5xl font-light leading-[43.2px] tracking-normal text-white md:text-[144px] md:leading-[129.6px]">
-                <span className="inline-block bg-[linear-gradient(276deg,rgb(255,255,255)_0%,rgba(148,148,148,0.96)_100%)] bg-clip-text text-transparent">
+            <motion.div variants={reveal} transition={{ duration: 0.95, ease: EASE }} className="relative z-[4] flex w-full flex-col items-center justify-center gap-2 pt-24 md:gap-4 md:pt-[90px]">
+              <h1 className="relative z-[80] overflow-visible text-center font-inter_display text-5xl font-light leading-[48px] tracking-normal text-white md:text-[144px] md:leading-[146px]">
+                <span className="relative z-[80] inline-block overflow-visible bg-[linear-gradient(276deg,rgb(255,255,255)_0%,rgba(148,148,148,0.96)_100%)] bg-clip-text text-transparent">
                   Reimagine
                 </span>
               </h1>
-              <h1 className="text-center font-inter_display text-5xl font-light leading-[43.2px] tracking-normal text-white md:text-[144px] md:leading-[129.6px]">
+              <h1 className="text-center font-inter_display text-5xl font-light leading-[48px] tracking-normal text-white md:text-[144px] md:leading-[146px]">
                 <span className="inline-block bg-[linear-gradient(276deg,rgb(255,255,255)_0%,rgba(166,166,166,0.96)_100%)] bg-clip-text text-transparent">
                   Your Space
                 </span>
@@ -446,12 +446,12 @@ export const App = () => {
 
         <ScrollScene>
           <WebGLDepthField />
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
-            <div className="lg:sticky lg:top-28 h-fit">
+          <div>
+            <div className="mb-12 flex flex-col justify-between gap-8 border-b border-black/10 pb-8 lg:flex-row lg:items-end">
               <SectionTitle eyebrow="What We Offer" title="Concept, detail, and delivery in one studio." copy="A structured design process with enough clarity to imagine the result before the work begins." />
               <a href="/services" className="mt-8 inline-flex border-b border-black/30 pb-2 text-[11px] uppercase tracking-[0.18em] text-[#12110f] no-underline transition hover:border-[#c9ad73] hover:text-[#8b6e30]">Explore services</a>
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
               {services.map((service, index) => (
                 <motion.article key={service.name} variants={reveal} transition={{ duration: 0.68, ease: EASE }} whileHover={{ y: -10, rotateX: 2 }} className="group relative overflow-hidden border border-black/10 bg-[#f2eadf]/82 p-4 shadow-[0_24px_80px_rgba(17,16,14,0.08)] backdrop-blur">
                   <motion.div className="absolute -right-12 -top-12 h-36 w-36 rounded-full border border-[#c9ad73]/35" animate={{ y: [0, 18, 0], x: [0, -10, 0] }} transition={{ duration: 8 + index, repeat: Infinity, ease: "easeInOut" }} />
@@ -491,10 +491,8 @@ export const App = () => {
 
         <ScrollScene>
           <div className="mb-12 grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-            <SectionTitle eyebrow="Home Decor" title="Objects that make an interior feel collected." />
-            <motion.p variants={reveal} transition={{ duration: 0.75, ease: EASE }} className="max-w-2xl text-lg leading-relaxed text-black/62 lg:pt-8">
-              Curated accents, handcrafted pieces, and conversation objects selected to make interiors feel personal, grounded, and quietly luxurious.
-            </motion.p>
+            <SectionTitle eyebrow="Home Decor" />
+            
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {decorItems.map((item, index) => (
